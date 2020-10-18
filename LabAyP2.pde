@@ -79,13 +79,14 @@ void draw (){
   
   // Los botones solo se mostraran en la pantalla inicial
   if (creditos==false && playy==false) {
-  image(title,255,-140);// Title
-  image(play,255,-10); // Play Buttom
-  fill(100);
-  stroke(0);
-  rect(490,510,240,80);
-  image(exit,255,90,720,720); // Exit Buttom
-  image(credit,255,190); // Credits Buttom 
+    image(title,255,-140);// Title
+    image(play,255,-10); // Play Buttom
+    fill(100);
+    stroke(0);
+    rect(490,510,240,80);
+    image(exit,255,90,720,720); // Exit Buttom
+    image(credit,255,190); // Credits Buttom 
+    text("Version 3.0", 1200, 700);
   }
   
   //Boton de retroceso 
