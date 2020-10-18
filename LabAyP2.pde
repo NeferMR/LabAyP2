@@ -1,6 +1,6 @@
 int x=1280,x1=1280,x2=1280,cambio=3,cambio1=2,cambio2=1;
 PImage title,play,exit,credit,wallpaper,nube1,nube2,nube3,salida;
-boolean op=false, creditos=false, botplay = false;
+boolean op=false, creditos=false, playy = false;
 void setup (){
   size (1280,720);
   title = loadImage("TITULO.png");
@@ -77,7 +77,7 @@ void draw (){
   image(nube3,x2,0); 
   //
   
-  if (creditos==false) {
+  if (creditos==false && playy==false) {
   image(title,255,-140);// Title
   image(play,255,-10); // Play Buttom
   fill(100);
@@ -87,7 +87,7 @@ void draw (){
   image(credit,255,190); // Credits Buttom 
   }
   
-  if (creditos == true || botplay == true) {
+  if (creditos == true || playy == true) {
       image(salida,0,0);
   }
 }
@@ -98,7 +98,11 @@ void draw (){
     if(mouseX>490 && mouseX<730 && mouseY>510 && mouseY<590){
       creditos=true;
     }
-    if (mouseX>0 && mouseX<81 && mouseY>0 && mouseY<81 && creditos == true) {
+    if (mouseX>490 && mouseX<730 && mouseY>310 && mouseY<390) {
+      playy=true;
+    }
+    if (mouseX>0 && mouseX<81 && mouseY>0 && mouseY<81 && (creditos == true || playy == true)) {
       creditos=false; 
+      playy=false;
     }
   }
