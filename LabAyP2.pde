@@ -1,6 +1,6 @@
 int x=1280,x1=1280,x2=1280,cambio=3,cambio1=2,cambio2=1;
 PImage title,play,exit,credit,wallpaper,nube1,nube2,nube3,salida;
-boolean op=false;
+boolean op=false, creditos=false;
 void setup (){
   size (1280,720);
   title = loadImage("TITULO.png");
@@ -17,7 +17,6 @@ void setup (){
 void draw (){
   background(0);
   image(wallpaper,0,0); // Wallpaper
-  
   //ANIMACION DE LAS NUBES
   x=x-cambio; //ecuacion de cambio para nube 1
   x1=x1-cambio1;//ecuacion de cambio para nube 2
@@ -48,6 +47,7 @@ void draw (){
   image(nube3,x2,0); 
   //
   
+  if (creditos==false) {
   image(title,255,-140);// Title
   image(play,255,-10); // Play Buttom
   fill(100);
@@ -55,11 +55,7 @@ void draw (){
   rect(490,510,240,80);
   image(exit,255,90,720,720); // Exit Buttom
   image(credit,255,190); // Credits Buttom 
-  if(mouseX>490 && mouseX<730 && mouseY>410 && mouseY<490 && mousePressed==true){
-    exit();
   }
-  if(mouseX>490 && mouseX<730 && mouseY>510 && mouseY<590 && mousePressed==true){
-    image(wallpaper,0,0); // Wallpaper
   
   //ANIMACION DE LAS NUBES
   x=x-cambio; //ecuacion de cambio para nube 1
@@ -90,6 +86,12 @@ void draw (){
   image(nube3,x2,0); 
   //
   image(salida,0,0);
-  }
-  
 }
+  void mouseClicked () {
+    if(mouseX>490 && mouseX<730 && mouseY>410 && mouseY<490){
+       exit();
+     }
+    if(mouseX>490 && mouseX<730 && mouseY>510 && mouseY<590){
+      creditos=true;
+    } 
+  }
