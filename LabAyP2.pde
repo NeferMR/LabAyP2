@@ -77,6 +77,7 @@ void draw (){
   image(nube3,x2,0); 
   //
   
+  // Los botones solo se mostraran en la pantalla inicial
   if (creditos==false && playy==false) {
   image(title,255,-140);// Title
   image(play,255,-10); // Play Buttom
@@ -87,22 +88,23 @@ void draw (){
   image(credit,255,190); // Credits Buttom 
   }
   
-  if (creditos == true || playy == true) {
+  //Boton de retroceso 
+  if (creditos == true || playy == true) { //solo se mostrara en play y creditos
       image(salida,0,0);
   }
 }
-  void mouseClicked () {
-    if(mouseX>490 && mouseX<730 && mouseY>410 && mouseY<490){
-       exit();
-     }
-    if(mouseX>490 && mouseX<730 && mouseY>510 && mouseY<590){
-      creditos=true;
-    }
-    if (mouseX>490 && mouseX<730 && mouseY>310 && mouseY<390) {
-      playy=true;
-    }
-    if (mouseX>0 && mouseX<81 && mouseY>0 && mouseY<81 && (creditos == true || playy == true)) {
-      creditos=false; 
-      playy=false;
-    }
+void mouseClicked () {
+  if(mouseX>480 && mouseX<745 && mouseY>410 && mouseY<490){ // presionar en Salir
+     exit();
+   }
+  if(mouseX>480 && mouseX<745 && mouseY>510 && mouseY<590){ //Presionar en creditos elimina la presentacion de los botones y muestra el boton retroceso
+    creditos=true;
   }
+  if (mouseX>480 && mouseX<745 && mouseY>310 && mouseY<390) { //Presionar en play elimina la presentacion de los botones y muestra el boton retroceso
+    playy=true;
+  }
+  if (mouseX>0 && mouseX<81 && mouseY>0 && mouseY<81 && (creditos == true || playy == true)) { //Configuracion para el boton retroceso
+    creditos=false; 
+    playy=false;
+  }
+}
