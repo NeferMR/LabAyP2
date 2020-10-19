@@ -76,6 +76,18 @@ void draw (){
     image(ex,0,0);
     image(piston,0,0);
     image(recipiente,0,0);
+    // Triangulos para controlar numero de particulas
+    fill(0);
+    triangle(1147, 182, 1147, 218, 1165, 200);
+    triangle(940, 182, 940, 218, 922, 200);
+    text("Numero de particulas", 990, 236);
+    text("Temperatura", 908, 32);
+    text("Volumen", 915, 105);
+    text("Presion", 1133, 32);
+    text("Radio", 1133, 105);
+    
+    
+    
   }
 }
 
