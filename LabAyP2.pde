@@ -1,6 +1,6 @@
-int x=1280,x1=1280,x2=1280,cambio=3,cambio1=2,cambio2=1,y=-720,cambioy=1;
+int x=1280,x1=1280,x2=1280,cambio=3,cambio1=2,cambio2=1,y=-720,cambioy=1,n=0;
 PImage title,play,exit,credit,wallpaper,nube1,nube2,nube3,salida,wallpaper2,ex,recipiente,piston,credtxt;
-boolean creditos=false,jugar=false;
+boolean creditos=false,jugar=false, temp=false, pres=false, volu=false, radi=false;
 void setup (){
   size (1280,720);
   title = loadImage("TITULO.png");
@@ -78,16 +78,22 @@ void draw (){
     image(recipiente,0,0);
     // Triangulos para controlar numero de particulas
     fill(0);
+    textSize(14);
     triangle(1147, 182, 1147, 218, 1165, 200);
     triangle(940, 182, 940, 218, 922, 200);
     text("Numero de particulas", 990, 236);
-    text("Temperatura", 908, 32);
+    text("Temperatura", 900, 32);
     text("Volumen", 915, 105);
     text("Presion", 1133, 32);
     text("Radio", 1133, 105);
     
+    textSize(32);
+    text(n, 1040, 211);
     
     
+    if(temp==true) {
+     quad(837, 35, 837, 73, 1038, 73, 1038, 35);
+    }
   }
 }
 
@@ -99,13 +105,36 @@ void mouseClicked(){
   if(mouseX>480 && mouseX<745 && mouseY>510 && mouseY<590){
     creditos=true;
   }
-  if (mouseX>10 && mouseX<81 && mouseY>0 && mouseY<81 && creditos == true) {
-    creditos=false; 
-  }
   if (mouseX>480 && mouseX<745 && mouseY>310 && mouseY<390) {
     jugar=true; 
   }
-  if (mouseX>10 && mouseX<81 && mouseY>0 && mouseY<81 && jugar == true) {
+
+  
+  if (creditos == true) {
+   if (mouseX>10 && mouseX<81 && mouseY>0 && mouseY<81) {
+     creditos=false; 
+   }
+  }
+  
+  
+  if (jugar == true) {
+   if (mouseX>10 && mouseX<81 && mouseY>0 && mouseY<81) {
     jugar=false; 
+   }
+   
+   
+   if(mouseX>921 && mouseX<941 && mouseY>181 && mouseY<219) {
+     n--;
+   }
+   if(mouseX>1146 && mouseX<1166 && mouseY>181 && mouseY<219) {
+     n++;
+   }
+   
+   
+   if(mouseX>836 && mouseX<1039 && mouseY>34 && mouseY<74) {
+    temp=true; 
+   } else {
+    temp=false; 
+   }
   }
 }
