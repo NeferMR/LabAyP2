@@ -1,6 +1,7 @@
-int x=1280,x1=1280,x2=1280,cambio=3,cambio1=2,cambio2=1,y=-720,cambioy=1,n=0;
+int x=1280,x1=1280,x2=1280,cambio=3,cambio1=2,cambio2=1,y=-720,cambioy=1,n=0, a;
 PImage title,play,exit,credit,wallpaper,nube1,nube2,nube3,salida,wallpaper2,ex,recipiente,piston,credtxt;
-boolean creditos=false,jugar=false, temp=false, pres=false, volu=false, radi=false;
+float xx, yy, vx=7.0, vy=2.0, r=20.0, dx=1, dy=-1;
+boolean creditos=false,jugar=false, temp=false, pres=false, volu=false, radi=false, mole=false;
 void setup (){
   size (1280,720);
   title = loadImage("TITULO.png");
@@ -17,6 +18,9 @@ void setup (){
   piston = loadImage("piston.png");
   recipiente = loadImage("recipiente.png");
   credtxt = loadImage("creditos.png");
+  if (mole==true){
+  ellipseMode(RADIUS);
+  }
 }
 //MENU DE OPCIONES
 void draw (){
@@ -95,9 +99,27 @@ void draw (){
      quad(837, 35, 837, 73, 1038, 73, 1038, 35);
     }
   }
+  if(mole==true){
+  molecula();
+  }
 }
 
-
+void molecula(){
+  for (int i = 0; i < n; i++) {
+    xx=random(490, 750);
+    yy=random(415, 560);
+   ellipse(xx,yy,r,r);
+  
+  xx=xx+vx*dx;
+  if ((xx>750)||(xx<490)){
+   dx=-dx;
+  }
+  yy=yy+vy*dy;
+  if ((yy>560)||(yy<415)){
+   dy=-dy;
+  }
+  } 
+}
 void mouseClicked(){
   if(mouseX>480 && mouseX<745 && mouseY>410 && mouseY<490){
     exit();
@@ -125,10 +147,18 @@ void mouseClicked(){
    
    if(mouseX>921 && mouseX<941 && mouseY>181 && mouseY<219) {
      n--;
+     if(n==0){
+     mole=false;
+     }else{
+     mole=true;
+     }
    }
+   
    if(mouseX>1146 && mouseX<1166 && mouseY>181 && mouseY<219) {
      n++;
+     mole=true;
    }
+   
    
    
    if(mouseX>836 && mouseX<1039 && mouseY>34 && mouseY<74) {
