@@ -101,7 +101,6 @@ void draw () {
     fill(133, 164, 243);
     if (temp==true) {
       quad(836, 37, 836, 74, 1037, 74, 1037, 37);
-      valtemp = Escribir(valtemp);
     }
     if (pres==true) {
       quad(1060, 37, 1060, 74, 1248, 74, 1248, 37);
@@ -112,6 +111,14 @@ void draw () {
     if (radi==true) {
       quad(1060, 110, 1060, 147, 1248, 147, 1248, 110);
     }
+
+    //Valores a recibir
+    textSize(16);
+    fill(0);
+    text(valtemp, 845, 64);
+    text(valpres, 1063, 64);
+    text(valvol, 845, 133);
+    text(valrad, 1063, 133);
   }
   if (mole==true) {
     fill(0);
@@ -136,16 +143,29 @@ void molecula() {
   }
 }
 
-String Escribir (String aux) {
-  if (key>='0' && key<='9') {
-    aux= aux + key;
-    key = 'f';
-  }
-  fill(255);
-  text(aux, 836, 37);
-  return aux;
-}
 
+void keyPressed() {
+  if (temp == true) {
+    if (key>='0' && key<='9') {
+      valtemp+= key;
+    }
+  }
+    if (pres == true) {
+    if (key>='0' && key<='9') {
+      valpres+= key;
+    }
+  }
+    if (volu == true) {
+    if (key>='0' && key<='9') {
+      valvol+= key;
+    }
+  }
+    if (radi == true) {
+    if (key>='0' && key<='9') {
+      valrad+= key;
+    }
+  }
+}
 
 void mouseClicked() {
   if (mouseX>480 && mouseX<745 && mouseY>410 && mouseY<490) {
