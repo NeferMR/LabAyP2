@@ -1,7 +1,9 @@
 int x=1280, x1=1280, x2=1280, cambio=3, cambio1=2, cambio2=1, y=-720, cambioy=1, n=0, a;
-PImage title, play, exit, credit, wallpaper, nube1, nube2, nube3, salida, wallpaper2, ex, recipiente, piston, credtxt;
+PImage title, play, exit, credit, wallpaper, nube1, nube2, nube3, salida, wallpaper2, ex, recipiente, piston, credtxt,isobarica,isovolumetrica,isotermica,adiabatica,isobaricasup,isovolumetricasup,isotermicasup,adiabaticasup,fuegobase;
+int maxFuego = 8,imageIndex=0;
+PImage [] fuego = new PImage[maxFuego];
 float xx = 500, yy = 500, vx=7.0, vy=2.0, r=20.0, dx=1, dy=-1;
-boolean creditos=false, jugar=false, temp=false, pres=false, volu=false, radi=false, mole=false;
+boolean creditos=false, jugar=false, temp=false, pres=false, volu=false, radi=false, mole=false,isobarica1=false,isotermica1=false,isovolumetrica1=false,adiabatica1=false;
 String valtemp = "", valpres = "", valvol = "", valrad = "";
 void setup () {
   size (1280, 720);
@@ -19,6 +21,19 @@ void setup () {
   piston = loadImage("piston.png");
   recipiente = loadImage("recipiente.png");
   credtxt = loadImage("creditos.png");
+  isobarica = loadImage("t.isobarica.png");
+  isovolumetrica = loadImage("t.isovolumetrica.png");
+  isotermica = loadImage("t.isotermica.png");
+  adiabatica= loadImage("t.adiabatica.png");
+  isobaricasup = loadImage("t.isobaricasup.png");
+  isovolumetricasup = loadImage("t.isovolumetricasup.png");
+  isotermicasup = loadImage("t.isotermicasup.png");
+  adiabaticasup= loadImage("t.adiabaticasup.png");
+  fuegobase = loadImage("fuegobase.png");
+  for(int i = 0; i < fuego.length; i++){
+    fuego[i] = loadImage("fuego_" + i + ".png");
+  }
+  frameRate(10);
   if (mole==true) {
     ellipseMode(RADIUS);
   }
@@ -77,7 +92,27 @@ void draw () {
   }
 
   if (jugar==true) {
+    
     image(wallpaper2, 0, 0);
+    image(fuegobase, 0, 0);
+    image(fuego[imageIndex],-8,0);
+    imageIndex = (imageIndex+1) % fuego.length;
+    image(adiabatica, 0, 0);
+    image(isotermica, 0, 0);
+    image(isovolumetrica, 0, 0);
+    image(isobarica, 0, 0);
+    if(isobarica1==true){
+      image(isobaricasup, 0, 0);
+    }
+    if(isotermica1==true){
+      image(isotermicasup, 0, 0);
+    }
+    if(isovolumetrica1==true){
+      image(isovolumetricasup, 0, 0);
+    }
+    if(adiabatica1==true){
+      image(adiabaticasup, 0, 0);
+    }
     image(ex, 0, 0);
     image(piston, 0, 0);
     image(recipiente, 0, 0);
@@ -141,6 +176,7 @@ void molecula() {
       dy=-dy;
     }
   }
+  frameRate(12);
 }
 
 
@@ -170,10 +206,12 @@ void keyPressed() {
 void mouseClicked() {
   if (mouseX>480 && mouseX<745 && mouseY>410 && mouseY<490) {
     exit(); // Boton salir en menu principal
+    
   }
   if (mouseX>480 && mouseX<745 && mouseY>510 && mouseY<590) {
     creditos=true; // Abrir paso a los creditos
   }
+  
   if (mouseX>480 && mouseX<745 && mouseY>310 && mouseY<390) {
     jugar=true;  // Iniciar la emulacion
   }
@@ -184,11 +222,17 @@ void mouseClicked() {
       creditos=false; // Boton retroceso en creditos
     }
   }
-
-
+  
+  
   if (jugar == true) {
     if (mouseX>10 && mouseX<81 && mouseY>0 && mouseY<81) {
-      jugar=false;  // Boton retroceso en la emulacion
+      jugar=false; // Boton retroceso en la emulacion
+      isobarica1=false;
+      isotermica1=false;
+      isovolumetrica1=false;
+      adiabatica1=false;
+      mole=false;
+      n=0;
     }
 
 
@@ -204,8 +248,6 @@ void mouseClicked() {
       n++;// Aumenta el numero de particulas
       mole=true; // Abre paso a la creacion de ellipses
     }
-
-
 
     if (mouseX>835 && mouseX<1038 && mouseY>36 && mouseY<75) {
       temp=true; // Cuando se de click en temperatura iniciar la edicion
@@ -227,5 +269,29 @@ void mouseClicked() {
     } else {
       radi = false;
     }
+  }
+  if (mouseX>890 && mouseX<1200 && mouseY>297 && mouseY<345){
+    isobarica1=true;
+    isotermica1=false;
+    isovolumetrica1=false;
+    adiabatica1=false;
+  }
+  if (mouseX>890 && mouseX<1200 && mouseY>473 && mouseY<528){
+    isobarica1=false;
+    isotermica1=true;
+    isovolumetrica1=false;
+    adiabatica1=false;
+  }
+  if (mouseX>890 && mouseX<1200 && mouseY>383 && mouseY<438){
+    isobarica1=false;
+    isotermica1=false;
+    isovolumetrica1=true;
+    adiabatica1=false;
+  }
+  if (mouseX>890 && mouseX<1200 && mouseY>566 && mouseY<620){
+    isobarica1=false;
+    isotermica1=false;
+    isovolumetrica1=false;
+    adiabatica1=true;
   }
 }
