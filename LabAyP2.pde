@@ -1,9 +1,10 @@
-int x=1280, x1=1280, x2=1280, cambio=3, cambio1=2, cambio2=1, y=-720, cambioy=1, n=0, a;
+
+int x=1280, x1=1280, x2=1280, cambio=3, cambio1=2, cambio2=1, y=-720, cambioy=1, n=0, a, pos1 = 0, pos2 = 0, pos3 = 0;
 PImage title, play, exit, credit, wallpaper, nube1, nube2, nube3, salida, wallpaper2, ex, recipiente, piston, credtxt, isobarica, isovolumetrica, isotermica, adiabatica, isobaricasup, isovolumetricasup, isotermicasup, adiabaticasup, fuegobase;
 int maxFuego = 8, imageIndex=0;
 PImage [] fuego = new PImage[maxFuego];
 float xx = 500, yy = 500, vx=7.0, vy=2.0, r=20.0, dx=1, dy=-1, valorT, valorP, valorV, valorR;
-boolean creditos=false, jugar=false, temp=false, pres=false, volu=false, radi=false, mole=false, isobarica1=false, isotermica1=false, isovolumetrica1=false, adiabatica1=false, editv, editp, editt, editr;
+boolean look = false, creditos=false, jugar=false, temp=false, pres=false, volu=false, radi=false, mole=false, isobarica1=false, isotermica1=false, isovolumetrica1=false, adiabatica1=false, editv, editp, editt, editr, wait = false;
 String valtemp = "", valpres = "", valvol = "", valrad = "";
 void setup () {
   size (1280, 720);
@@ -97,21 +98,77 @@ void draw () {
     image(fuegobase, 0, 0);
     image(fuego[imageIndex], -8, 0);
     imageIndex = (imageIndex+1) % fuego.length;
-    image(adiabatica, 0, 0);
-    image(isotermica, 0, 0);
-    image(isovolumetrica, 0, 0);
-    image(isobarica, 0, 0);
-    if (isobarica1==true) {
-      image(isobaricasup, 0, 0);
+    if (isobarica1==false && isotermica1==false && isovolumetrica1==false && adiabatica1==false) {
+      image(adiabatica, 0, 0);
+      image(isotermica, 0, 0);
+      image(isovolumetrica, 0, 0);
+      image(isobarica, 0, 0);
     }
-    if (isotermica1==true) {
-      image(isotermicasup, 0, 0);
+    if (isobarica1==true) {
+      triangle(886, 231, 864, 246, 886, 261); //triangulo para indicar retroceso (Es apenas un boceto)
+      image(isobaricasup, 0, 0);
+      
+      
     }
     if (isovolumetrica1==true) {
-      image(isovolumetricasup, 0, 0);
+      triangle(886, 231, 864, 246, 886, 261);
+      image(isovolumetricasup, 0, pos1);
+      frameRate(120);
+      if (pos1 > -86 && look == true) {
+        pos1 = pos1 - 3;
+      } else if (look == false) {
+        if (wait == true) {
+          if (pos1 < 0) {
+            pos1 = pos1 + 3;
+          } else {
+            wait = false;
+          }
+        } else {
+          isovolumetrica1 = false;
+        }
+      }
+      
+      
+    }
+    if (isotermica1==true) {
+      triangle(886, 231, 864, 246, 886, 261);
+      image(isotermicasup, 0, pos2);
+      frameRate(120);
+      if (pos2 > -176 && look == true) {
+        pos2 = pos2 - 6;
+      } else if (look == false) {
+        if (wait == true) {
+          if (pos2 < 0) {
+            pos2 = pos2 + 6;
+          } else {
+            wait = false;
+          }
+        } else {
+          isotermica1 = false;
+        }
+      }
+      
+      
     }
     if (adiabatica1==true) {
-      image(adiabaticasup, 0, 0);
+      triangle(886, 231, 864, 246, 886, 261);
+      image(adiabaticasup, 0, pos3);
+      frameRate(120);
+      if (pos3 > -270 && look == true) {
+        pos3 = pos3 - 9;
+      } else if (look == false) {
+        if (wait == true) {
+          if (pos3 < 0) {
+            pos3 = pos3 + 9;
+          } else {
+            wait = false;
+          }
+        } else {
+          adiabatica1 = false;
+        }
+      }
+      
+      
     }
     image(ex, 0, 0);
     image(piston, 0, 0);
@@ -163,44 +220,44 @@ void draw () {
 
     // Calcular el cuarto valor
     if (!valtemp.equals("") && !valpres.equals("") && !valvol.equals("") && editv == true && editp == true && editt == true) {
-      valorR = (valorP * valorV) / (n * valorT);
-      valrad = String.valueOf(valorR);
+      valorR = (valorP * valorV) / (n * valorT); // Proceso matematico 
+      valrad = String.valueOf(valorR); // conversion a string para mostrar
       editr = false;
       textSize(10);
-      fill(255,0,0);
-      text("Se ha autocompletado el valor del radio", 1060, 158);
+      fill(255, 0, 0);
+      text("Se ha autocompletado el valor del radio", 1060, 158); // mostrar la advertencia al usuario de la accion automatica hecha por el programa
     } else {
-     editr = true; 
+      editr = true;
     }
     if (!valtemp.equals("") && !valpres.equals("") && !valrad.equals("") && editr == true && editp == true && editt == true) {
       valorV = (n * valorR * valorT) / valorP;
       valvol = String.valueOf(valorV);
       editv = false;
       textSize(10);
-      fill(255,0,0);
+      fill(255, 0, 0);
       text("Se ha autocompletado el valor del volumen", 834, 158);
     } else {
-     editv = true; 
+      editv = true;
     }
     if (!valtemp.equals("") && !valvol.equals("") && !valrad.equals("") && editr == true && editv == true && editt == true) {
       valorP = (n * valorR * valorT) / valorV;
       valpres = String.valueOf(valorP);
       editp = false;
       textSize(10);
-      fill(255,0,0);
+      fill(255, 0, 0);
       text("Se ha autocompletado el valor de Presion", 1060, 86);
     } else {
-     editp = true; 
+      editp = true;
     }
     if (!valpres.equals("") && !valvol.equals("") && !valrad.equals("") && editv == true && editp == true && editr == true) {
       valorT = (valorP * valorV) / (n * valorR);
       valtemp = String.valueOf(valorT);
       editt = false;
       textSize(10);
-      fill(255,0,0);
+      fill(255, 0, 0);
       text("Se ha autocompletado el valor de temperatura", 828, 86);
     } else {
-     editt = true; 
+      editt = true;
     }
 
 
@@ -233,7 +290,6 @@ void molecula() {
       dy=-dy;
     }
   }
-  frameRate(12);
 }
 
 
@@ -242,20 +298,32 @@ void keyPressed() {
     if (key>='0' && key<='9') {
       valtemp+= key;
     }
+    if (key == 8) {
+     valtemp = valtemp.substring(0, valtemp.length() - 1); 
+    }
   }
   if (pres == true && editp == true) {
     if (key>='0' && key<='9') {
       valpres+= key;
+    }
+    if (key == 8) {
+     valpres = valpres.substring(0, valpres.length() - 1); 
     }
   }
   if (volu == true && editv == true) {
     if (key>='0' && key<='9') {
       valvol+= key;
     }
+    if (key == 8) {
+     valvol = valvol.substring(0, valvol.length() - 1); 
+    }
   }
   if (radi == true && editr == true) {
     if (key>='0' && key<='9') {
       valrad+= key;
+    }
+    if (key == 8) {
+     valrad = valrad.substring(0, valrad.length() - 1); 
     }
   }
 }
@@ -331,23 +399,31 @@ void mouseClicked() {
     isotermica1=false;
     isovolumetrica1=false;
     adiabatica1=false;
-  }
-  if (mouseX>890 && mouseX<1200 && mouseY>473 && mouseY<528) {
-    isobarica1=false;
-    isotermica1=true;
-    isovolumetrica1=false;
-    adiabatica1=false;
+    look = true;
   }
   if (mouseX>890 && mouseX<1200 && mouseY>383 && mouseY<438) {
     isobarica1=false;
     isotermica1=false;
     isovolumetrica1=true;
     adiabatica1=false;
+    look = true;
+  }
+  if (mouseX>890 && mouseX<1200 && mouseY>473 && mouseY<528) {
+    isobarica1=false;
+    isotermica1=true;
+    isovolumetrica1=false;
+    adiabatica1=false;
+    look = true;
   }
   if (mouseX>890 && mouseX<1200 && mouseY>566 && mouseY<620) {
     isobarica1=false;
     isotermica1=false;
     isovolumetrica1=false;
     adiabatica1=true;
+    look = true;
+  }
+  if (mouseX>863 && mouseX<886 && mouseY>230 && mouseY<260) {
+    wait = true;
+    look = false;
   }
 }
