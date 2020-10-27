@@ -4,7 +4,7 @@ PImage title, play, exit, credit, wallpaper, nube1, nube2, nube3, salida, wallpa
 int maxFuego = 8, imageIndex=0;
 PImage [] fuego = new PImage[maxFuego];
 float xx = 500, yy = 500, vx=7.0, vy=2.0, r=20.0, dx=1, dy=-1, valorT, valorP, valorV, valorR;
-boolean look = false, creditos=false, jugar=false, temp=false, pres=false, volu=false, radi=false, mole=false, isobarica1=false, isotermica1=false, isovolumetrica1=false, adiabatica1=false, editv, editp, editt, editr, wait = false;
+boolean temp2, vol2, pres2, look = false, creditos=false, jugar=false, temp=false, pres=false, volu=false, radi=false, mole=false, isobarica1=false, isotermica1=false, isovolumetrica1=false, adiabatica1=false, editv, editp, editt, editr, wait = false;
 String valtemp = "", valpres = "", valvol = "", valrad = "";
 void setup () {
   size (1280, 720);
@@ -43,6 +43,7 @@ void setup () {
 void draw () {
   background(0);
   image(wallpaper, 0, 0); // Wallpaper
+  frameRate(120);
 
   //ANIMACION DE LAS NUBES
   x=x-cambio; //ecuacion de cambio para nube 1
@@ -103,72 +104,6 @@ void draw () {
       image(isotermica, 0, 0);
       image(isovolumetrica, 0, 0);
       image(isobarica, 0, 0);
-    }
-    if (isobarica1==true) {
-      triangle(886, 231, 864, 246, 886, 261); //triangulo para indicar retroceso (Es apenas un boceto)
-      image(isobaricasup, 0, 0);
-      
-      
-    }
-    if (isovolumetrica1==true) {
-      triangle(886, 231, 864, 246, 886, 261);
-      image(isovolumetricasup, 0, pos1);
-      frameRate(120);
-      if (pos1 > -86 && look == true) {
-        pos1 = pos1 - 3;
-      } else if (look == false) {
-        if (wait == true) {
-          if (pos1 < 0) {
-            pos1 = pos1 + 3;
-          } else {
-            wait = false;
-          }
-        } else {
-          isovolumetrica1 = false;
-        }
-      }
-      
-      
-    }
-    if (isotermica1==true) {
-      triangle(886, 231, 864, 246, 886, 261);
-      image(isotermicasup, 0, pos2);
-      frameRate(120);
-      if (pos2 > -176 && look == true) {
-        pos2 = pos2 - 6;
-      } else if (look == false) {
-        if (wait == true) {
-          if (pos2 < 0) {
-            pos2 = pos2 + 6;
-          } else {
-            wait = false;
-          }
-        } else {
-          isotermica1 = false;
-        }
-      }
-      
-      
-    }
-    if (adiabatica1==true) {
-      triangle(886, 231, 864, 246, 886, 261);
-      image(adiabaticasup, 0, pos3);
-      frameRate(120);
-      if (pos3 > -270 && look == true) {
-        pos3 = pos3 - 9;
-      } else if (look == false) {
-        if (wait == true) {
-          if (pos3 < 0) {
-            pos3 = pos3 + 9;
-          } else {
-            wait = false;
-          }
-        } else {
-          adiabatica1 = false;
-        }
-      }
-      
-      
     }
     image(ex, 0, 0);
     image(piston, 0, 0);
@@ -260,6 +195,87 @@ void draw () {
       editt = true;
     }
 
+    // animacion de botones de seleccion
+    if (isobarica1==true) {
+      triangle(886, 231, 864, 246, 886, 261); //triangulo para indicar retroceso (Es apenas un boceto)
+      image(isobaricasup, 0, 0);
+      if (look == true) {
+        fill(168, 189, 247);
+        quad(910, 393, 910, 429, 1184, 429, 1184, 393);
+        quad(910, 482, 910, 520, 1184, 520, 1184, 482);
+        quad(986, 566, 986, 622, 1100, 622, 1100, 566) ;
+      }
+    }
+    if (isovolumetrica1==true) {
+      triangle(886, 231, 864, 246, 886, 261);
+      image(isovolumetricasup, 0, pos1);
+
+      if (pos1 > -86 && look == true) {
+        pos1 = pos1 - 3;
+      } else if (look == false) {
+        if (wait == true) {
+          if (pos1 < 0) {
+            pos1 = pos1 + 3;
+          } else {
+            wait = false;
+          }
+        } else {
+          isovolumetrica1 = false;
+        }
+      } else {
+        fill(168, 189, 247);
+        quad(910, 393, 910, 429, 1184, 429, 1184, 393);
+        quad(910, 482, 910, 520, 1184, 520, 1184, 482);
+        quad(986, 566, 986, 622, 1100, 622, 1100, 566);
+      }
+    }
+    if (isotermica1==true) {
+      triangle(886, 231, 864, 246, 886, 261);
+      image(isotermicasup, 0, pos2);
+
+      if (pos2 > -176 && look == true) {
+        pos2 = pos2 - 6;
+      } else if (look == false) {
+        if (wait == true) {
+          if (pos2 < 0) {
+            pos2 = pos2 + 6;
+          } else {
+            wait = false;
+          }
+        } else {
+          isotermica1 = false;
+        }
+      } else {
+        fill(168, 189, 247);
+        quad(910, 393, 910, 429, 1184, 429, 1184, 393);
+        quad(910, 482, 910, 520, 1184, 520, 1184, 482);
+        quad(986, 566, 986, 622, 1100, 622, 1100, 566);
+      }
+    }
+    if (adiabatica1==true) {
+      triangle(886, 231, 864, 246, 886, 261);
+      image(adiabaticasup, 0, pos3);
+
+      if (pos3 > -270 && look == true) {
+        pos3 = pos3 - 9;
+      } else if (look == false) {
+        if (wait == true) {
+          if (pos3 < 0) {
+            pos3 = pos3 + 9;
+          } else {
+            wait = false;
+          }
+        } else {
+          adiabatica1 = false;
+        }
+      } else {
+        fill(168, 189, 247);
+        quad(910, 393, 910, 429, 1184, 429, 1184, 393);
+        quad(910, 482, 910, 520, 1184, 520, 1184, 482);
+        quad(986, 566, 986, 622, 1100, 622, 1100, 566);
+      }
+    }
+
 
     //Valores a recibir
     textSize(16);
@@ -299,7 +315,7 @@ void keyPressed() {
       valtemp+= key;
     }
     if (key == 8) {
-     valtemp = valtemp.substring(0, valtemp.length() - 1); 
+      valtemp = valtemp.substring(0, valtemp.length() - 1);
     }
   }
   if (pres == true && editp == true) {
@@ -307,7 +323,7 @@ void keyPressed() {
       valpres+= key;
     }
     if (key == 8) {
-     valpres = valpres.substring(0, valpres.length() - 1); 
+      valpres = valpres.substring(0, valpres.length() - 1);
     }
   }
   if (volu == true && editv == true) {
@@ -315,7 +331,7 @@ void keyPressed() {
       valvol+= key;
     }
     if (key == 8) {
-     valvol = valvol.substring(0, valvol.length() - 1); 
+      valvol = valvol.substring(0, valvol.length() - 1);
     }
   }
   if (radi == true && editr == true) {
@@ -323,7 +339,7 @@ void keyPressed() {
       valrad+= key;
     }
     if (key == 8) {
-     valrad = valrad.substring(0, valrad.length() - 1); 
+      valrad = valrad.substring(0, valrad.length() - 1);
     }
   }
 }
@@ -424,6 +440,7 @@ void mouseClicked() {
   }
   if (mouseX>863 && mouseX<886 && mouseY>230 && mouseY<260) {
     wait = true;
+    isobarica1 = false;
     look = false;
   }
 }
