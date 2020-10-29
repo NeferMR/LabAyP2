@@ -34,7 +34,6 @@ void setup () {
   for (int i = 0; i < fuego.length; i++) {
     fuego[i] = loadImage("fuego_" + i + ".png");
   }
-  frameRate(10);
   if (mole==true) {
     ellipseMode(RADIUS);
   }
@@ -203,7 +202,8 @@ void draw () {
         fill(168, 189, 247);
         quad(910, 393, 910, 429, 1184, 429, 1184, 393);
         quad(910, 482, 910, 520, 1184, 520, 1184, 482);
-        quad(986, 566, 986, 622, 1100, 622, 1100, 566) ;
+        quad(986, 566, 986, 622, 1100, 622, 1100, 566);
+        text("",0,0);
       }
     }
     if (isovolumetrica1==true) {
@@ -227,6 +227,7 @@ void draw () {
         quad(910, 393, 910, 429, 1184, 429, 1184, 393);
         quad(910, 482, 910, 520, 1184, 520, 1184, 482);
         quad(986, 566, 986, 622, 1100, 622, 1100, 566);
+        text("",0,0);
       }
     }
     if (isotermica1==true) {
@@ -311,7 +312,7 @@ void molecula() {
 
 void keyPressed() {
   if (temp == true && editt == true) {
-    if (key>='0' && key<='9') {
+    if (key>='0' && key<='9' || key == '.') {
       valtemp+= key;
     }
     if (key == 8) {
@@ -319,7 +320,7 @@ void keyPressed() {
     }
   }
   if (pres == true && editp == true) {
-    if (key>='0' && key<='9') {
+    if (key>='0' && key<='9' || key == '.') {
       valpres+= key;
     }
     if (key == 8) {
@@ -327,7 +328,7 @@ void keyPressed() {
     }
   }
   if (volu == true && editv == true) {
-    if (key>='0' && key<='9') {
+    if (key>='0' && key<='9' || key == '.') {
       valvol+= key;
     }
     if (key == 8) {
@@ -335,7 +336,7 @@ void keyPressed() {
     }
   }
   if (radi == true && editr == true) {
-    if (key>='0' && key<='9') {
+    if (key>='0' && key<='9' || key == '.') {
       valrad+= key;
     }
     if (key == 8) {
