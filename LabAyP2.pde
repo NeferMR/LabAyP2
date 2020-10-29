@@ -199,12 +199,8 @@ void draw () {
       triangle(886, 231, 864, 246, 886, 261); //triangulo para indicar retroceso (Es apenas un boceto)
       image(isobaricasup, 0, 0);
       if (look == true) {
-        try {
-          if (!tempfinal.equals("")) {
-            tfinal = Float.parseFloat(tempfinal);
-          }
-        } 
-        catch (NumberFormatException e) {
+        if (!tempfinal.equals("")) {
+          tfinal = Float.parseFloat(tempfinal);
         }
         if (!volfinal.equals("")) {
           vfinal = Float.parseFloat(volfinal);
@@ -235,9 +231,15 @@ void draw () {
           fill(255, 0, 0);
           text(("Este valor sera calculado por procesos fisicos"), 910, 535);
         }
+        if (!volfinal.equals("")) {
+          tf = false;
+          textSize(8);
+          fill(255, 0, 0);
+          text(("Este valor sera calculado por procesos fisicos"), 910, 443);
+        }
         textSize(16);
         fill(0);
-        text(tempfinal, 915, 413);
+        text(tempfinal, 915, 416);
         text(volfinal, 915, 505);
       }
     }
@@ -257,6 +259,12 @@ void draw () {
           isovolumetrica1 = false;
         }
       } else {
+        if (!tempfinal.equals("")) {
+          tfinal = Float.parseFloat(tempfinal);
+        }
+        if (!presfinal.equals("")) {
+          pfinal = Float.parseFloat(presfinal);
+        }
         fill(168, 189, 247);
         if (tf == true) {
           fill(141, 165, 233);
@@ -278,6 +286,18 @@ void draw () {
         text("Presion final", 910, 475);
         textSize(32);
         text("Calcular", 982, 605);
+        if (!tempfinal.equals("")) {
+          pf = false;
+          textSize(8);
+          fill(255, 0, 0);
+          text(("Este valor sera calculado por procesos fisicos"), 910, 535);
+        }
+        if (!presfinal.equals("")) {
+          tf = false;
+          textSize(8);
+          fill(255, 0, 0);
+          text(("Este valor sera calculado por procesos fisicos"), 910, 443);
+        }
       }
     }
     if (isotermica1==true) {
@@ -296,6 +316,12 @@ void draw () {
           isotermica1 = false;
         }
       } else {
+        if (!presfinal.equals("")) {
+          pfinal = Float.parseFloat(presfinal);
+        }
+        if (!volfinal.equals("")) {
+          vfinal = Float.parseFloat(volfinal);
+        }
         fill(168, 189, 247);
         if (pf == true) {
           fill(141, 165, 233);
@@ -317,6 +343,18 @@ void draw () {
         text("volumen final", 910, 475);
         textSize(32);
         text("Calcular", 982, 605);
+        if (!presfinal.equals("")) {
+          vf = false;
+          textSize(8);
+          fill(255, 0, 0);
+          text(("Este valor sera calculado por procesos fisicos"), 910, 535);
+        }
+        if (!volfinal.equals("")) {
+          pf = false;
+          textSize(8);
+          fill(255, 0, 0);
+          text(("Este valor sera calculado por procesos fisicos"), 910, 443);
+        }
       }
     }
     if (adiabatica1==true) {
