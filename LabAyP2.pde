@@ -9,7 +9,7 @@ String tempfinal = "", volfinal = "", presfinal = "", valtemp = "", valpres = ""
 int tapa = 0, limite = 415;
 void setup () {
   size (1280, 720);
-  title = loadImage("TITULO.png");
+  title = loadImage("TITULO.png"); // carga de imagenes
   play = loadImage ("BOTON PLAY.png");
   exit = loadImage("exit bottom.png");
   credit = loadImage("credits.png");
@@ -84,7 +84,7 @@ void draw () {
     text("Version 3.0", 1200, 700);
   }
 
-  if (creditos == true) {
+  if (creditos == true) { // animacion para los creditos
     image(salida, 10, 0);
     y=y+cambioy;
     if (y>0) {
@@ -95,12 +95,12 @@ void draw () {
 
   if (jugar==true) {
 
-    image(wallpaper2, 0, 0);
+    image(wallpaper2, 0, 0); // importar el fondo para simular una nueva pantalla
     image(fuegobase, 0, 0);
     image(fuego[imageIndex], -8, 0);
     imageIndex = (imageIndex+1) % fuego.length;
     if (isobarica1==false && isotermica1==false && isovolumetrica1==false && adiabatica1==false) {
-      image(adiabatica, 0, 0);
+      image(adiabatica, 0, 0); // mostrar botones sin seleccionar
       image(isotermica, 0, 0);
       image(isovolumetrica, 0, 0);
       image(isobarica, 0, 0);
@@ -140,7 +140,7 @@ void draw () {
     }
 
     //Convertir los valores recibidos
-    if (!valtemp.equals("") && editt == true) {
+    if (!valtemp.equals("") && editt == true) { // condicional para evitar la mala edicion de datos
       valorT = Float.parseFloat(valtemp);
     }
     if (!valpres.equals("") && editp == true) {
@@ -154,16 +154,17 @@ void draw () {
     }
 
     // Calcular el cuarto valor
-    if (!valtemp.equals("") && !valpres.equals("") && !valvol.equals("") && editv == true && editp == true && editt == true) {
+    if (!valtemp.equals("") && !valpres.equals("") && !valvol.equals("") && editv == true && editp == true && editt == true) { // condicional para reconocer el dato a calcular
       valorR = (valorP * valorV) / (n * valorT); // Proceso matematico 
       valrad = String.valueOf(valorR); // conversion a string para mostrar
-      editr = false;
+      editr = false; // quitar la edicion de este dato
       textSize(10);
       fill(255, 0, 0);
       text("Se ha autocompletado el valor del radio", 1060, 158); // mostrar la advertencia al usuario de la accion automatica hecha por el programa
     } else {
-      editr = true;
+      editr = true; // habilitar la edicion de este dato
     }
+    // copy and paste de lo anterior con arreglo en el funcionamiento
     if (!valtemp.equals("") && !valpres.equals("") && !valrad.equals("") && editr == true && editp == true && editt == true) {
       valorV = (n * valorR * valorT) / valorP;
       valvol = String.valueOf(valorV);
@@ -174,6 +175,7 @@ void draw () {
     } else {
       editv = true;
     }
+    // copy and paste de lo anterior con arreglo en el funcionamiento
     if (!valtemp.equals("") && !valvol.equals("") && !valrad.equals("") && editr == true && editv == true && editt == true) {
       valorP = (n * valorR * valorT) / valorV;
       valpres = String.valueOf(valorP);
@@ -184,6 +186,7 @@ void draw () {
     } else {
       editp = true;
     }
+    // copy and paste de lo anterior con arreglo en el funcionamiento
     if (!valpres.equals("") && !valvol.equals("") && !valrad.equals("") && editv == true && editp == true && editr == true) {
       valorT = (valorP * valorV) / (n * valorR);
       valtemp = String.valueOf(valorT);
@@ -196,18 +199,18 @@ void draw () {
     }
 
     // animacion de botones de seleccion
-    if (isobarica1==true) {
+    if (isobarica1==true) { // Identificar el boton seleccionado
       fill(0);
       triangle(886, 231, 864, 246, 886, 261); //triangulo para indicar retroceso (Es apenas un boceto)
-      image(isobaricasup, 0, 0);
-      if (look == true) {
-        if (!tempfinal.equals("")) {
-          tfinal = Float.parseFloat(tempfinal);
+      image(isobaricasup, 0, 0); // mostra el boton en diferente color para indicar seleccion
+      if (look == true) { // Variable para que el boton no vuelva a la normalidad hasta que el usuario lo indique
+        if (!tempfinal.equals("")) { 
+          tfinal = Float.parseFloat(tempfinal); // leer los datos de los valores finales 
         }
         if (!volfinal.equals("")) {
           vfinal = Float.parseFloat(volfinal);
         }
-        if (tf == true) {
+        if (tf == true) { // indicar cual valor se va a editar por medio de cambio de color
           fill(141, 165, 233);
         } else {
           fill(168, 189, 247);
@@ -223,16 +226,17 @@ void draw () {
         quad(976, 566, 976, 622, 1110, 622, 1110, 566);
         fill(0);
         textSize(12);
-        text("Temperatura final", 910, 383);
+        text("Temperatura final", 910, 383); // Horientar al usuario donde debe ingresar los valores
         text("volumen final", 910, 475);
         textSize(32);
-        text("Calcular", 982, 605);
-        if (!tempfinal.equals("")) {
+        text("Calcular", 982, 605); // boton para calcular, tal como se especifica en la documentacion
+        if (!tempfinal.equals("")) { // Se identifica que valor se va a calcular y se inhabilita su edicion a base de cancelacion en el mayor momento posible
           vf = false;
           textSize(8);
           fill(255, 0, 0);
-          text(("Este valor sera calculado por procesos fisicos"), 910, 535);
+          text(("Este valor sera calculado por procesos fisicos"), 910, 535); // indicar al usuario que este valor no debe editarlo ya que lo hara el programa
         }
+        // copy and paste de lo anterior con arreglo en el funcionamiento
         if (!volfinal.equals("")) {
           tf = false;
           textSize(8);
@@ -241,32 +245,34 @@ void draw () {
         }
         textSize(16);
         fill(0);
-        text(tempfinal, 915, 416);
+        text(tempfinal, 915, 416); // Mostrar al usuario los valores digitados o finales
         text(volfinal, 915, 505);
         if (cal == true) {
           fill(191, 207, 245);
-          quad(876, 600, 876, 631, 960, 631, 960, 600);
+          quad(876, 600, 876, 631, 960, 631, 960, 600); // crear un boton el cual permita el borrado de datos y volver a iniciar la transformacion
           fill(0);
           text("Borrar", 890, 623);
         }
       }
     }
+    // copy and paste de lo anterior con arreglo en el funcionamiento
     if (isovolumetrica1==true) {
       fill(0);
       triangle(886, 231, 864, 246, 886, 261);
       image(isovolumetricasup, 0, pos1);
-      if (pos1 > -86 && look == true) {
+      if (pos1 > -86 && look == true) { // animacion para cuando el boton sea seleccionado este suba
         pos1 = pos1 - 3;
       } else if (look == false) {
         if (wait == true) {
-          if (pos1 < 0) {
+          if (pos1 < 0) { // animacion de bajada
             pos1 = pos1 + 3;
           } else {
             wait = false;
           }
         } else {
-          isovolumetrica1 = false;
+          isovolumetrica1 = false; // desactivacion del boton para cuando el boton llegue a su posicion original
         }
+        // copy and paste de lo anterior con arreglo en el funcionamiento
       } else {
         if (!tempfinal.equals("")) {
           tfinal = Float.parseFloat(tempfinal);
@@ -319,6 +325,7 @@ void draw () {
         }
       }
     }
+    // copy and paste de lo anterior con arreglo en el funcionamiento
     if (isotermica1==true) {
       fill(0);
       triangle(886, 231, 864, 246, 886, 261);
@@ -387,6 +394,7 @@ void draw () {
         }
       }
     }
+    // copy and paste de lo anterior con arreglo en el funcionamiento
     if (adiabatica1==true) {
       fill(0);
       triangle(886, 231, 864, 246, 886, 261);
@@ -411,14 +419,16 @@ void draw () {
         text("Actualizaciones", 910, 513);
       }
     }
-
+    
+    
     if (cal == true) {
+      //animacion para el piston movil
       if (valorV > vfinal) {
         if (limite < 515) {
           limite++;
           tapa++;
         }
-      } else {
+      } else if (valorV < vfinal) {
         if (limite > 315) {
           limite--;
           tapa--;
@@ -426,10 +436,11 @@ void draw () {
       }
       
       fill(255, 255, 0);
+      //flecha amarilla que indica el calor cedido
       if (valorT < vfinal) {
         quad(495, 623, 495, 671, 525, 671, 525, 623);
         triangle(481, 621, 510, 590, 539, 621);
-      } else {
+      } else if (valorT > vfinal) {
         quad(512, 592, 512, 632, 534, 632, 534, 592);
         triangle(500, 632, 521, 672, 546, 632);
       }
@@ -450,6 +461,7 @@ void draw () {
   }
 }
 
+// funcion para las particulas
 void molecula() {
   for (int i = 0; i < n; i++) {
     xx=random(490, 750);
@@ -467,7 +479,7 @@ void molecula() {
   }
 }
 
-
+// funcion para calcular los valores finales
 void calcular() {
   if (isobarica1 == true) {
     if (volfinal.equals("")) {
@@ -502,22 +514,24 @@ void calcular() {
 }
 
 
+//mapeo de letras para que puedan ser leidos los valores 
 void keyPressed() {
   if (temp == true && editt == true) {
-    if (key>='0' && key<='9') {
+    if (key>='0' && key<='9') { // solo podran ser ingresados numeros
       valtemp+= key;
     }
-    if (key == '.') {
+    if (key == '.') { // validar para que solo sea un punto por cada valor
       if (!valtemp.contains(".")) {
         valtemp+= key;
       }
     }
-    if (valtemp.length() > 0) {
+    if (valtemp.length() > 0) { // borrar por medio de las funciones del substring
       if (key == 8) {
         valtemp = valtemp.substring(0, valtemp.length() - 1);
       }
     }
   }
+  // copy and paste de lo anterior con arreglo en el funcionamiento
   if (pres == true && editp == true) {
     if (key>='0' && key<='9') {
       valpres+= key;
@@ -661,10 +675,11 @@ void mouseClicked() {
       temp=false; // Click en cualquier otro lugar desahibilitara la edicion
     }
     if (mouseX>1060 && mouseX<1248 && mouseY>36 && mouseY<75) {
-      pres = true;
+      pres = true; // indicarle al usuario cual valor va a editar
     } else {
       pres = false;
     }
+    // copy and paste de lo anterior con arreglo en el funcionamiento
     if (mouseX>836 && mouseX<1039 && mouseY>109 && mouseY<147) {
       volu = true;
     } else {
@@ -677,12 +692,14 @@ void mouseClicked() {
     }
 
     if (mouseX>890 && mouseX<1200 && mouseY>297 && mouseY<345 && isotermica1 == false && isobarica1 == false && isovolumetrica1 == false && adiabatica1 == false) {
+      // Activacion de las teclas de conversion
       isobarica1=true;
       isotermica1=false;
       isovolumetrica1=false;
       adiabatica1=false;
       look = true;
     }
+    // copy and paste de lo anterior con arreglo en el funcionamiento
     if (mouseX>890 && mouseX<1200 && mouseY>383 && mouseY<438 && isotermica1 == false && isobarica1 == false && isovolumetrica1 == false && adiabatica1 == false) {
       isobarica1=false;
       isotermica1=false;
@@ -690,6 +707,7 @@ void mouseClicked() {
       adiabatica1=false;
       look = true;
     }
+    // copy and paste de lo anterior con arreglo en el funcionamiento
     if (mouseX>890 && mouseX<1200 && mouseY>473 && mouseY<528 && isotermica1 == false && isobarica1 == false && isovolumetrica1 == false && adiabatica1 == false) {
       isobarica1=false;
       isotermica1=true;
@@ -697,6 +715,7 @@ void mouseClicked() {
       adiabatica1=false;
       look = true;
     }
+    // copy and paste de lo anterior con arreglo en el funcionamiento
     if (mouseX>890 && mouseX<1200 && mouseY>566 && mouseY<620 && isotermica1 == false && isobarica1 == false && isovolumetrica1 == false && adiabatica1 == false) {
       isobarica1=false;
       isotermica1=false;
@@ -704,13 +723,14 @@ void mouseClicked() {
       adiabatica1=true;
       look = true;
     }
-    if (mouseX>863 && mouseX<886 && mouseY>230 && mouseY<260) {
+    if (mouseX>863 && mouseX<886 && mouseY>230 && mouseY<260) { // boton de retroceso en las conversiones (activan la animacion de regreso)
       wait = true;
       isobarica1 = false;
       look = false;
     }
 
     if (isobarica1 == true) {
+      // indica al usuario los campos que esta editando al hacer click
       if (mouseX>910 && mouseX<1184 && mouseY>393 && mouseY<429) {
         tf = true;
       } else {
@@ -721,9 +741,11 @@ void mouseClicked() {
       } else {
         vf = false;
       }
+      // llama la funcion calcular para dar un resultado final
       if (mouseX>976 && mouseX<1110 && mouseY>566 && mouseY<622) {
         calcular();
       }
+      // boton de borrar que reinicia los valores al entrar en las conversiones
       if (mouseX>876 && mouseX<960 && mouseY>600 && mouseY<631) {
         presfinal = "";
         volfinal = "";
@@ -733,6 +755,7 @@ void mouseClicked() {
         cal = false;
       }
     }
+    // copy and paste de lo anterior con arreglo en el funcionamiento
     if (isotermica1 == true) {
       if (mouseX>910 && mouseX<1184 && mouseY>393 && mouseY<429) {
         pf = true;
@@ -756,6 +779,7 @@ void mouseClicked() {
         cal = false;
       }
     }
+    // copy and paste de lo anterior con arreglo en el funcionamiento
     if (isovolumetrica1 == true) {
       if (mouseX>910 && mouseX<1184 && mouseY>393 && mouseY<429) {
         tf = true;
