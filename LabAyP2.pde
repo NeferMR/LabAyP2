@@ -4,8 +4,9 @@ PImage title, play, exit, credit, wallpaper, nube1, nube2, nube3, salida, wallpa
 int maxFuego = 8, imageIndex=0;
 PImage [] fuego = new PImage[maxFuego];
 float tfinal, pfinal, vfinal, xx = 500, yy = 500, vx=7.0, vy=2.0, r=20.0, dx=1, dy=-1, valorT, valorP, valorV, valorR;
-boolean tf = false, vf = false, pf = false, temp2, vol2, pres2, look = false, creditos=false, jugar=false, temp=false, pres=false, volu=false, radi=false, mole=false, isobarica1=false, isotermica1=false, isovolumetrica1=false, adiabatica1=false, editv, editp, editt, editr, wait = false;
+boolean cal = false, tf = false, vf = false, pf = false, temp2, vol2, pres2, look = false, creditos=false, jugar=false, temp=false, pres=false, volu=false, radi=false, mole=false, isobarica1=false, isotermica1=false, isovolumetrica1=false, adiabatica1=false, editv, editp, editt, editr, wait = false;
 String tempfinal = "", volfinal = "", presfinal = "", valtemp = "", valpres = "", valvol = "", valrad = "";
+int tapa = 0, limite = 415;
 void setup () {
   size (1280, 720);
   title = loadImage("TITULO.png");
@@ -105,7 +106,7 @@ void draw () {
       image(isobarica, 0, 0);
     }
     image(ex, 0, 0);
-    image(piston, 0, 0);
+    image(piston, 0, tapa);
     image(recipiente, 0, 0);
     // Triangulos para controlar numero de particulas
     fill(0);
@@ -196,6 +197,7 @@ void draw () {
 
     // animacion de botones de seleccion
     if (isobarica1==true) {
+      fill(0);
       triangle(886, 231, 864, 246, 886, 261); //triangulo para indicar retroceso (Es apenas un boceto)
       image(isobaricasup, 0, 0);
       if (look == true) {
@@ -241,9 +243,16 @@ void draw () {
         fill(0);
         text(tempfinal, 915, 416);
         text(volfinal, 915, 505);
+        if (cal == true) {
+          fill(191, 207, 245);
+          quad(876, 600, 876, 631, 960, 631, 960, 600);
+          fill(0);
+          text("Borrar", 890, 623);
+        }
       }
     }
     if (isovolumetrica1==true) {
+      fill(0);
       triangle(886, 231, 864, 246, 886, 261);
       image(isovolumetricasup, 0, pos1);
       if (pos1 > -86 && look == true) {
@@ -298,9 +307,20 @@ void draw () {
           fill(255, 0, 0);
           text(("Este valor sera calculado por procesos fisicos"), 910, 443);
         }
+        textSize(16);
+        fill(0);
+        text(tempfinal, 915, 416);
+        text(presfinal, 915, 505);
+        if (cal == true) {
+          fill(191, 207, 245);
+          quad(876, 600, 876, 631, 960, 631, 960, 600);
+          fill(0);
+          text("Borrar", 890, 623);
+        }
       }
     }
     if (isotermica1==true) {
+      fill(0);
       triangle(886, 231, 864, 246, 886, 261);
       image(isotermicasup, 0, pos2);
       if (pos2 > -176 && look == true) {
@@ -355,9 +375,20 @@ void draw () {
           fill(255, 0, 0);
           text(("Este valor sera calculado por procesos fisicos"), 910, 443);
         }
+        textSize(16);
+        fill(0);
+        text(presfinal, 915, 416);
+        text(volfinal, 915, 505);
+        if (cal == true) {
+          fill(191, 207, 245);
+          quad(876, 600, 876, 631, 960, 631, 960, 600);
+          fill(0);
+          text("Borrar", 890, 623);
+        }
       }
     }
     if (adiabatica1==true) {
+      fill(0);
       triangle(886, 231, 864, 246, 886, 261);
       image(adiabaticasup, 0, pos3);
       if (pos3 > -270 && look == true) {
@@ -373,10 +404,34 @@ void draw () {
           adiabatica1 = false;
         }
       } else {
-        fill(168, 189, 247);
-        quad(910, 393, 910, 429, 1184, 429, 1184, 393);
-        quad(910, 482, 910, 520, 1184, 520, 1184, 482);
-        quad(986, 566, 986, 622, 1100, 622, 1100, 566);
+        fill(255, 0, 0);
+        text("Esta conversion", 910, 393);
+        text("Sera finalizada", 910, 433);
+        text("En futuras", 910, 473);
+        text("Actualizaciones", 910, 513);
+      }
+    }
+
+    if (cal == true) {
+      if (valorV > vfinal) {
+        if (limite < 515) {
+          limite++;
+          tapa++;
+        }
+      } else {
+        if (limite > 315) {
+          limite--;
+          tapa--;
+        }
+      }
+      
+      fill(255, 255, 0);
+      if (valorT < vfinal) {
+        quad(495, 623, 495, 671, 525, 671, 525, 623);
+        triangle(481, 621, 510, 590, 539, 621);
+      } else {
+        quad(512, 592, 512, 632, 534, 632, 534, 592);
+        triangle(500, 632, 521, 672, 546, 632);
       }
     }
 
@@ -398,7 +453,7 @@ void draw () {
 void molecula() {
   for (int i = 0; i < n; i++) {
     xx=random(490, 750);
-    yy=random(415, 560);
+    yy=random(limite, 560);
     ellipse(xx, yy, r, r);
 
     xx=xx+vx*dx;
@@ -406,7 +461,7 @@ void molecula() {
       dx=-dx;
     }
     yy=yy+vy*dy;
-    if ((yy>560)||(yy<415)) {
+    if ((yy>560)||(yy<limite)) {
       dy=-dy;
     }
   }
@@ -414,6 +469,36 @@ void molecula() {
 
 
 void calcular() {
+  if (isobarica1 == true) {
+    if (volfinal.equals("")) {
+      vfinal = valorV * tfinal / valorT;
+      volfinal = String.valueOf(vfinal);
+    } else {
+      tfinal = vfinal * valorT / valorV;
+      tempfinal = String.valueOf(tfinal);
+    }
+  }
+
+  if (isovolumetrica1 == true) {
+    if (presfinal.equals("")) {
+      pfinal = valorP * tfinal / valorT;
+      presfinal = String.valueOf(pfinal);
+    } else {
+      tfinal = pfinal * valorT / valorP;
+      tempfinal = String.valueOf(tfinal);
+    }
+  }
+
+  if (isotermica1 == true) {
+    if (presfinal.equals("")) {
+      pfinal = valorP * valorV / vfinal;
+      presfinal = String.valueOf(pfinal);
+    } else {
+      vfinal = valorP * valorV / pfinal;
+      volfinal = String.valueOf(vfinal);
+    }
+  }
+  cal = true;
 }
 
 
@@ -639,6 +724,14 @@ void mouseClicked() {
       if (mouseX>976 && mouseX<1110 && mouseY>566 && mouseY<622) {
         calcular();
       }
+      if (mouseX>876 && mouseX<960 && mouseY>600 && mouseY<631) {
+        presfinal = "";
+        volfinal = "";
+        tempfinal = "";
+        tapa = 0;
+        limite = 415;
+        cal = false;
+      }
     }
     if (isotermica1 == true) {
       if (mouseX>910 && mouseX<1184 && mouseY>393 && mouseY<429) {
@@ -654,6 +747,14 @@ void mouseClicked() {
       if (mouseX>976 && mouseX<1110 && mouseY>566 && mouseY<622) {
         calcular();
       }
+      if (mouseX>876 && mouseX<960 && mouseY>600 && mouseY<631) {
+        presfinal = "";
+        volfinal = "";
+        tempfinal = "";
+        tapa = 0;
+        limite = 415;
+        cal = false;
+      }
     }
     if (isovolumetrica1 == true) {
       if (mouseX>910 && mouseX<1184 && mouseY>393 && mouseY<429) {
@@ -668,6 +769,14 @@ void mouseClicked() {
       }
       if (mouseX>976 && mouseX<1110 && mouseY>566 && mouseY<622) {
         calcular();
+      }
+      if (mouseX>876 && mouseX<960 && mouseY>600 && mouseY<631) {
+        presfinal = "";
+        volfinal = "";
+        tempfinal = "";
+        tapa = 0;
+        limite = 415;
+        cal = false;
       }
     }
   }
