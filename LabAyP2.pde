@@ -205,7 +205,7 @@ void draw () {
       image(isobaricasup, 0, 0); // mostra el boton en diferente color para indicar seleccion
       if (look == true) { // Variable para que el boton no vuelva a la normalidad hasta que el usuario lo indique
         if (!tempfinal.equals("")) { 
-          tfinal = Float.parseFloat(tempfinal); // leer los datos de los valores finales 
+          tfinal = Float.parseFloat(tempfinal); // leer los datos de los valores finales
         }
         if (!volfinal.equals("")) {
           vfinal = Float.parseFloat(volfinal);
@@ -412,6 +412,7 @@ void draw () {
           adiabatica1 = false;
         }
       } else {
+        textSize(32);
         fill(255, 0, 0);
         text("Esta conversion", 910, 393);
         text("Sera finalizada", 910, 433);
@@ -419,8 +420,8 @@ void draw () {
         text("Actualizaciones", 910, 513);
       }
     }
-    
-    
+
+
     if (cal == true) {
       //animacion para el piston movil
       if (valorV > vfinal) {
@@ -434,15 +435,17 @@ void draw () {
           tapa--;
         }
       }
-      
+
       fill(255, 255, 0);
       //flecha amarilla que indica el calor cedido
-      if (valorT < vfinal) {
-        quad(495, 623, 495, 671, 525, 671, 525, 623);
-        triangle(481, 621, 510, 590, 539, 621);
-      } else if (valorT > vfinal) {
-        quad(512, 592, 512, 632, 534, 632, 534, 592);
-        triangle(500, 632, 521, 672, 546, 632);
+      if (isotermica1 == false) {
+        if (valorT < vfinal) {
+          quad(495, 623, 495, 671, 525, 671, 525, 623);
+          triangle(481, 621, 510, 590, 539, 621);
+        } else if (valorT > vfinal) {
+          quad(512, 592, 512, 632, 534, 632, 534, 592);
+          triangle(500, 632, 521, 672, 546, 632);
+        }
       }
     }
 
@@ -710,7 +713,7 @@ void mouseClicked() {
     // copy and paste de lo anterior con arreglo en el funcionamiento
     if (mouseX>890 && mouseX<1200 && mouseY>473 && mouseY<528 && isotermica1 == false && isobarica1 == false && isovolumetrica1 == false && adiabatica1 == false) {
       isobarica1=false;
-      isotermica1=true;
+      isotermica1=true;borrar();
       isovolumetrica1=false;
       adiabatica1=false;
       look = true;
@@ -727,6 +730,7 @@ void mouseClicked() {
       wait = true;
       isobarica1 = false;
       look = false;
+      borrar();
     }
 
     if (isobarica1 == true) {
@@ -747,12 +751,7 @@ void mouseClicked() {
       }
       // boton de borrar que reinicia los valores al entrar en las conversiones
       if (mouseX>876 && mouseX<960 && mouseY>600 && mouseY<631) {
-        presfinal = "";
-        volfinal = "";
-        tempfinal = "";
-        tapa = 0;
-        limite = 415;
-        cal = false;
+        borrar();
       }
     }
     // copy and paste de lo anterior con arreglo en el funcionamiento
@@ -771,12 +770,7 @@ void mouseClicked() {
         calcular();
       }
       if (mouseX>876 && mouseX<960 && mouseY>600 && mouseY<631) {
-        presfinal = "";
-        volfinal = "";
-        tempfinal = "";
-        tapa = 0;
-        limite = 415;
-        cal = false;
+        borrar();
       }
     }
     // copy and paste de lo anterior con arreglo en el funcionamiento
@@ -795,13 +789,17 @@ void mouseClicked() {
         calcular();
       }
       if (mouseX>876 && mouseX<960 && mouseY>600 && mouseY<631) {
-        presfinal = "";
-        volfinal = "";
-        tempfinal = "";
-        tapa = 0;
-        limite = 415;
-        cal = false;
+        borrar();
       }
     }
   }
+}
+
+void borrar() {
+  presfinal = "";
+  volfinal = "";
+  tempfinal = "";
+  tapa = 0;
+  limite = 415;
+  cal = false;
 }
