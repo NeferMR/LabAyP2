@@ -7,6 +7,7 @@ float tfinal, pfinal, vfinal, xx = 500, yy = 500, vx=7.0, vy=2.0, r=20.0, dx=1, 
 boolean cal = false, tf = false, vf = false, pf = false, temp2, vol2, pres2, look = false, creditos=false, jugar=false, temp=false, pres=false, volu=false, radi=false, mole=false, isobarica1=false, isotermica1=false, isovolumetrica1=false, adiabatica1=false, editv, editp, editt, editr, wait = false;
 String tempfinal = "", volfinal = "", presfinal = "", valtemp = "", valpres = "", valvol = "", valrad = "";
 int tapa = 0, limite = 415;
+float mol[][] = new float [999][4];
 void setup () {
   size (1280, 720);
   title = loadImage("TITULO.png"); // carga de imagenes
@@ -467,17 +468,18 @@ void draw () {
 // funcion para las particulas
 void molecula() {
   for (int i = 0; i < n; i++) {
-    xx=random(490, 750);
-    yy=random(limite, 560);
-    ellipse(xx, yy, r, r);
-
-    xx=xx+vx*dx;
-    if ((xx>750)||(xx<490)) {
-      dx=-dx;
+    ellipse(mol[i][0], mol[i][1], r, r);
+  
+  
+    mol[i][0]=mol[i][0]+vx*mol[i][2];
+    if ((mol[i][0]>750)||(mol[i][0]<490)) {
+      mol[i][2]=mol[i][2] * -1;
     }
-    yy=yy+vy*dy;
-    if ((yy>560)||(yy<limite)) {
-      dy=-dy;
+  
+  
+    mol[i][1]=mol[i][1]+vy*mol[i][3];
+    if ((mol[i][1]>560)||(mol[i][1]<limite)) {
+      mol[i][3]=mol[i][3] * -1;
     }
   }
 }
@@ -669,6 +671,10 @@ void mouseClicked() {
 
     if (mouseX>1146 && mouseX<1166 && mouseY>181 && mouseY<219) {
       n++;// Aumenta el numero de particulas
+      mol[n-1][0] = random(490, 750);
+      mol[n-1][1] = random(limite, 560);
+      mol[n-1][2] = 1;
+      mol[n-1][3] = -1;
       mole=true; // Abre paso a la creacion de ellipses
     }
 
