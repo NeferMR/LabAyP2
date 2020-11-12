@@ -3,9 +3,10 @@ int x=1280, x1=1280, x2=1280, cambio=3, cambio1=2, cambio2=1, y=-720, cambioy=1,
 PImage title, play, exit, credit, wallpaper, nube1, nube2, nube3, salida, wallpaper2, ex, recipiente, piston, credtxt, isobarica, isovolumetrica, isotermica, adiabatica, isobaricasup, isovolumetricasup, isotermicasup, adiabaticasup, fuegobase;
 int maxFuego = 8, imageIndex=0;
 PImage [] fuego = new PImage[maxFuego];
-float tfinal, pfinal, vfinal, xx = 500, yy = 500, vx=7.0, vy=2.0, r=20.0, dx=1, dy=-1, valorT, valorP, valorV, valorR;
+float vx=7.0, vy=2.0, r=20.0, dx=1, dy=-1; 
+double tfinal, pfinal, vfinal, valorT, valorP, valorV, valorR = 8.314, cons = (5*valorR)/3, trabajo, Q;
 boolean cal = false, tf = false, vf = false, pf = false, temp2, vol2, pres2, look = false, creditos=false, jugar=false, temp=false, pres=false, volu=false, mole=false, isobarica1=false, isotermica1=false, isovolumetrica1=false, adiabatica1=false, editv, editp, editt, wait = false;
-String tempfinal = "", volfinal = "", presfinal = "", valtemp = "", valpres = "", valvol = "", valrad = "";
+String tempfinal = "", volfinal = "", presfinal = "", valtemp = "", valpres = "", valvol = "", valrad = "", W = "", Q1 = "";
 int tapa = 0, limite = 415;
 float mol[][] = new float [999][4];
 void setup () {
@@ -44,7 +45,7 @@ void setup () {
 void draw () {
   background(0);
   image(wallpaper, 0, 0); // Wallpaper
-  frameRate(120);
+  frameRate(60);
 
   //ANIMACION DE LAS NUBES
   x=x-cambio; //ecuacion de cambio para nube 1
@@ -82,7 +83,7 @@ void draw () {
     image(exit, 255, 90, 720, 720); // Exit Buttom
     image(credit, 255, 190); // Credits Buttom
     fill(225);
-    text("Version 3.0", 1200, 700);
+    text("Version 4.2", 1200, 700);
   }
 
   if (creditos == true) { // animacion para los creditos
@@ -119,7 +120,7 @@ void draw () {
     text("Temperatura", 900, 32);
     text("Volumen", 915, 105);
     text("Presion", 1133, 32);
-    text("Radio", 1133, 105);
+    text("Constante universal", 1070, 105);
 
     // Numero de partidas a mostrar
     textSize(32);
@@ -148,7 +149,6 @@ void draw () {
       valorV = Float.parseFloat(valvol);
     }
     valrad = "8.314";
-    valorR = 8.314;
 
 
     // Calcular el cuarto valor
@@ -506,11 +506,11 @@ void draw () {
 
       fill(255, 255, 0);
       //flecha amarilla que indica el calor cedido
-      if (isotermica1 == false) {
-        if (valorT < vfinal) {
+      if (isobarica1 == false) {
+        if (Q > 0) {
           quad(495, 623, 495, 671, 525, 671, 525, 623);
           triangle(481, 621, 510, 590, 539, 621);
-        } else if (valorT > vfinal) {
+        } else if (Q < 0) {
           quad(512, 592, 512, 632, 534, 632, 534, 592);
           triangle(500, 632, 521, 672, 546, 632);
         }
@@ -525,6 +525,11 @@ void draw () {
     text(valpres, 1063, 64);
     text(valvol, 845, 133);
     text(valrad, 1063, 133);
+    text("Trabajo", 50, 350);
+    text(W, 50, 370);
+    text("Calor", 50, 400);
+    text(Q1, 50, 420);
+    
   }
   if (mole==true) {
     fill(0);
@@ -539,16 +544,16 @@ void molecula() {
   for (int i = 0; i < n; i++) {
     ellipse(mol[i][0], mol[i][1], r, r);
 
-
     mol[i][0]=mol[i][0]+vx*mol[i][2];
     if ((mol[i][0]>750)||(mol[i][0]<490)) {
       mol[i][2]=mol[i][2] * -1;
     }
 
-
     mol[i][1]=mol[i][1]+vy*mol[i][3];
-    if ((mol[i][1]>560)||(mol[i][1]<limite)) {
-      mol[i][3]=mol[i][3] * -1;
+    if ((mol[i][1]>560)) {
+      mol[i][3]=-1;
+    } else if ((mol[i][1]<limite)) {
+      mol[i][3]=1;
     }
   }
 }
@@ -563,6 +568,10 @@ void calcular() {
       tfinal = vfinal * valorT / valorV;
       tempfinal = String.valueOf(tfinal);
     }
+    trabajo = valorP * (vfinal - valorV);
+    W = String.valueOf(trabajo);
+    Q = n * ((5/2) * valorR) * (tfinal - valorT);
+    Q1 = String.valueOf(Q);
   }
 
   if (isovolumetrica1 == true) {
@@ -573,6 +582,10 @@ void calcular() {
       tfinal = pfinal * valorT / valorP;
       tempfinal = String.valueOf(tfinal);
     }
+    trabajo = 0;
+    W = String.valueOf(trabajo);
+    Q = n * ((3/2) * valorR) * (tfinal - valorT);
+    Q1 = String.valueOf(Q);
   }
 
   if (isotermica1 == true) {
@@ -583,10 +596,38 @@ void calcular() {
       vfinal = valorP * valorV / pfinal;
       volfinal = String.valueOf(vfinal);
     }
+    trabajo = n * valorR * valorT * Math.log(vfinal/valorV);
+    W = String.valueOf(trabajo);
+    Q = trabajo;
+    Q1 = String.valueOf(Q);
+  }
+
+  if (adiabatica1 == true) {
+    if (!tempfinal.equals("")) {
+      vfinal = Math.pow(((valorT*Math.pow(valorV, cons-1) / tfinal)), (1/cons-1));
+      pfinal = ((valorP*Math.pow(valorV, cons) / Math.pow(vfinal, cons)));
+      volfinal = String.valueOf(vfinal);
+      presfinal = String.valueOf(pfinal);
+    }
+    if (!presfinal.equals("")) {
+      vfinal = Math.pow((valorP*Math.pow(valorV, cons) / pfinal), (1/ cons));
+      tfinal = ((valorT*Math.pow(valorV, cons-1) / Math.pow(vfinal, cons-1)));
+      volfinal = String.valueOf(vfinal);
+      tempfinal = String.valueOf(tfinal);
+    }
+    if (!volfinal.equals("")) {
+      pfinal = ((valorP*Math.pow(valorV, cons) / Math.pow(vfinal, cons)));
+      tfinal = ((valorT*Math.pow(valorV, cons-1) / Math.pow(vfinal, cons-1)));
+      presfinal = String.valueOf(pfinal);
+      tempfinal = String.valueOf(tfinal);
+    }
+    trabajo = ((1 / (cons-1)) * (valorP * valorV - pfinal * vfinal));
+    W = String.valueOf(trabajo);
+    Q = 0;
+    Q1 = String.valueOf(Q);
   }
   cal = true;
 }
-
 
 //mapeo de letras para que puedan ser leidos los valores 
 void keyPressed() {
@@ -870,8 +911,8 @@ void mouseClicked() {
       } else {
         vf = false;
       }
-      if (adiabatica1 == true) {
-        if (mouseX>976 && mouseX<1110 && mouseY>586 && mouseY<642) {
+      if (mouseX>976 && mouseX<1110 && mouseY>586 && mouseY<642) {
+        if (adiabatica1 == true) {
           calcular();
         }
       }
@@ -881,7 +922,6 @@ void mouseClicked() {
     }
   }
 }
-
 void borrar() {
   presfinal = "";
   volfinal = "";
@@ -889,4 +929,8 @@ void borrar() {
   tapa = 0;
   limite = 415;
   cal = false;
+  trabajo = 0;
+  Q = 0;
+  W = "";
+  Q1 = "";
 }
