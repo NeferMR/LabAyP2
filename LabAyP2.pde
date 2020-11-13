@@ -1,4 +1,3 @@
-
 import grafica.*;
 GPlot plot;
 
@@ -7,7 +6,7 @@ PImage title, play, exit, credit, wallpaper, nube1, nube2, nube3, salida, wallpa
 int maxFuego = 8, imageIndex=0, nPoints = 1000;
 PImage [] fuego = new PImage[maxFuego];
 double tfinal, pfinal, vfinal, valorT, valorP, valorV, cons = (5*8.314)/3, trabajo, Q;
-boolean graf = false, cal = false, tf = false, vf = false, pf = false, temp2, vol2, pres2, look = false, creditos=false, jugar=false, temp=false, pres=false, volu=false, mole=false, isobarica1=false, isotermica1=false, isovolumetrica1=false, adiabatica1=false, editv, editp, editt, wait = false, alerta = false;
+boolean graf = false, cal = false, tf = false, vf = false, pf = false, temp2, vol2, pres2, look = false, creditos=false, jugar=false, temp=false, pres=false, volu=false, mole=false, isobarica1=false, isotermica1=false, isovolumetrica1=false, adiabatica1=false, editv, editp, editt, wait = false, alerta = false, puntos = false;
 String tempfinal = "", volfinal = "", presfinal = "", valtemp = "", valpres = "", valvol = "", W = "", Q1 = "";
 int tapa = 0, limite = 415;
 float mol[][] = new float [100][4];
@@ -48,20 +47,15 @@ void setup () {
 
   plot = new GPlot(this, 12, 77, 390, 241);
   plot.setTitleText("Grafica P vs V");
-  plot.getXAxis().setAxisLabelText("Presion");
-  plot.getYAxis().setAxisLabelText("Volumen");
-  
-  for (int i = 0; i < nPoints; i++) {
-    float xp = 10 + random(200);
-    float yp = 10*exp(0.015*x);
-    points.add(xp, yp);
-  }
+  plot.getXAxis().setAxisLabelText("vulumen");
+  plot.getYAxis().setAxisLabelText("presion");
 }
-//MENU DE OPCIONES
+
+//Funcion draw par dibujar el proyecto
 void draw () {
   background(0);
   image(wallpaper, 0, 0); // Wallpaper
-  frameRate(60);
+  frameRate(120);
 
   //ANIMACION DE LAS NUBES
   x=x-cambio; //ecuacion de cambio para nube 1
@@ -532,15 +526,17 @@ void draw () {
 
     if (cal == true) {
       //animacion para el piston movil
-      if (valorV > vfinal) {
-        if (limite < 515) {
-          limite++;
-          tapa++;
-        }
-      } else if (valorV < vfinal) {
-        if (limite > 315) {
-          limite--;
-          tapa--;
+      if (isovolumetrica1 == false) {
+        if (valorV > vfinal) {
+          if (limite < 515) {
+            limite++;
+            tapa++;
+          }
+        } else if (valorV < vfinal) {
+          if (limite > 315) {
+            limite--;
+            tapa--;
+          }
         }
       }
 
@@ -583,7 +579,7 @@ void draw () {
       text("Los valores no pueden estar vacios", 915, 555);
     }
   }
-  
+
   if (graf == true) {
     grafica();
   }
@@ -628,6 +624,7 @@ void calcular() {
       Q1 = String.valueOf(Q);
       cal = true;
       graf = true;
+      puntos = true;
     }
   }
 
@@ -649,9 +646,9 @@ void calcular() {
       Q1 = String.valueOf(Q);
       cal = true;
       graf = true;
+      puntos = true;
     }
   }
-
   if (isotermica1 == true) {
     if (presfinal.equals("") && volfinal.equals("")) {
       alerta = true;
@@ -670,6 +667,7 @@ void calcular() {
       Q1 = String.valueOf(Q);
       cal = true;
       graf = true;
+      puntos = true;
     }
   }
 
@@ -703,11 +701,15 @@ void calcular() {
       Q1 = String.valueOf(Q);
       cal = true;
       graf = true;
+      puntos = true;
     }
   }
 }
 
 void grafica() {
+  if (puntos == true) {
+    puntos((float) valorV, (float) valorP, (float) vfinal, (float) pfinal);
+  }
   plot.beginDraw();
   plot.drawBackground();
   plot.drawBox();
@@ -720,6 +722,34 @@ void grafica() {
   plot.endDraw();
 }
 
+void puntos(float xp1, float yp1, float xp2, float yp2) {
+  float xt = 0, yt = 0, setx = 0;
+  double  sety = 0;
+  xt = xp2 - xp1;
+  yt = yp2 - yp1;
+  for (float i = 0.001; i <= 1; i = i + 0.001) {
+    if (isovolumetrica1 == true) {
+      setx = xp1;
+      sety = yp1 + yt*i;
+    } else {
+      setx = xp1 + xt*i;
+    }
+    if (isobarica1 == true) {
+      sety = yp1;
+    }
+    if (isotermica1 == true) {
+      sety = xp1 * yp1 / setx;
+    }
+    if (isobarica1 == true) {
+      sety = ((yp1*Math.pow(xp1,cons) / Math.pow(setx,cons)));
+    }
+    points.add(setx,(float) sety);
+  }
+
+  plot.setPoints(points);
+  plot.setPointColor(color(100, 100, 255, 100));
+  puntos = false;
+}
 
 //mapeo de letras para que puedan ser leidos los valores 
 void keyPressed() {
@@ -1028,4 +1058,5 @@ void borrar() {
   Q1 = "";
   graf = false;
   alerta = false;
+
 }
