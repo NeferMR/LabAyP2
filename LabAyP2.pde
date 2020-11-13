@@ -1,14 +1,18 @@
 
-int x=1280, x1=1280, x2=1280, cambio=3, cambio1=2, cambio2=1, y=-720, cambioy=1, n=0, a, pos1 = 0, pos2 = 0, pos3 = 0;
-PImage title, play, exit, credit, wallpaper, nube1, nube2, nube3, salida, wallpaper2, ex, recipiente, piston, credtxt, isobarica, isovolumetrica, isotermica, adiabatica, isobaricasup, isovolumetricasup, isotermicasup, adiabaticasup, fuegobase;
-int maxFuego = 8, imageIndex=0;
+import grafica.*;
+GPlot plot;
+
+int x=1280, x1=1280, x2=1280, cambio=3, cambio1=2, cambio2=1, y=-550, cambioy=1, n=0, a, pos1 = 0, pos2 = 0, pos3 = 0;
+PImage title, play, exit, credit, wallpaper, nube1, nube2, nube3, salida, wallpaper2, ex, recipiente, piston, credtxt, isobarica, isovolumetrica, isotermica, adiabatica, isobaricasup, isovolumetricasup, isotermicasup, adiabaticasup, fuegobase, exc;
+int maxFuego = 8, imageIndex=0, nPoints = 1000;
 PImage [] fuego = new PImage[maxFuego];
-float vx=7.0, vy=2.0, r=20.0, dx=1, dy=-1; 
-double tfinal, pfinal, vfinal, valorT, valorP, valorV, valorR = 8.314, cons = (5*valorR)/3, trabajo, Q;
-boolean cal = false, tf = false, vf = false, pf = false, temp2, vol2, pres2, look = false, creditos=false, jugar=false, temp=false, pres=false, volu=false, mole=false, isobarica1=false, isotermica1=false, isovolumetrica1=false, adiabatica1=false, editv, editp, editt, wait = false;
-String tempfinal = "", volfinal = "", presfinal = "", valtemp = "", valpres = "", valvol = "", valrad = "", W = "", Q1 = "";
+double tfinal, pfinal, vfinal, valorT, valorP, valorV, cons = (5*8.314)/3, trabajo, Q;
+boolean graf = false, cal = false, tf = false, vf = false, pf = false, temp2, vol2, pres2, look = false, creditos=false, jugar=false, temp=false, pres=false, volu=false, mole=false, isobarica1=false, isotermica1=false, isovolumetrica1=false, adiabatica1=false, editv, editp, editt, wait = false, alerta = false;
+String tempfinal = "", volfinal = "", presfinal = "", valtemp = "", valpres = "", valvol = "", W = "", Q1 = "";
 int tapa = 0, limite = 415;
-float mol[][] = new float [999][4];
+float mol[][] = new float [100][4];
+GPointsArray points = new GPointsArray(nPoints);
+
 void setup () {
   size (1280, 720);
   title = loadImage("TITULO.png"); // carga de imagenes
@@ -34,11 +38,23 @@ void setup () {
   isotermicasup = loadImage("t.isotermicasup.png");
   adiabaticasup= loadImage("t.adiabaticasup.png");
   fuegobase = loadImage("fuegobase.png");
+  exc = loadImage("Exclama.png");
   for (int i = 0; i < fuego.length; i++) {
     fuego[i] = loadImage("fuego_" + i + ".png");
   }
   if (mole==true) {
     ellipseMode(RADIUS);
+  }
+
+  plot = new GPlot(this, 12, 77, 390, 241);
+  plot.setTitleText("Grafica P vs V");
+  plot.getXAxis().setAxisLabelText("Presion");
+  plot.getYAxis().setAxisLabelText("Volumen");
+  
+  for (int i = 0; i < nPoints; i++) {
+    float xp = 10 + random(200);
+    float yp = 10*exp(0.015*x);
+    points.add(xp, yp);
   }
 }
 //MENU DE OPCIONES
@@ -83,7 +99,7 @@ void draw () {
     image(exit, 255, 90, 720, 720); // Exit Buttom
     image(credit, 255, 190); // Credits Buttom
     fill(225);
-    text("Version 4.2", 1200, 700);
+    text("Version 4.2", 1190, 700);
   }
 
   if (creditos == true) { // animacion para los creditos
@@ -148,12 +164,12 @@ void draw () {
     if (!valvol.equals("") && editv == true) {
       valorV = Float.parseFloat(valvol);
     }
-    valrad = "8.314";
+
 
 
     // Calcular el cuarto valor
     if (!valtemp.equals("") && !valpres.equals("") && editp == true && editt == true) {
-      valorV = (n * valorR * valorT) / valorP;
+      valorV = (n * 8.314 * valorT) / valorP;
       valvol = String.valueOf(valorV);
       editv = false;
       textSize(10);
@@ -164,12 +180,20 @@ void draw () {
       textSize(16);
       fill(0);
       text("Borrar", 1190, 172);
+      image(exc, 1165, 158, 20, 20);
+      if (mouseX>1165 && mouseX<1185 && mouseY>158 && mouseY<178) {
+        fill(255);
+        quad(990, 190, 990, 209, 1270, 209, 1270, 190);
+        fill(0);
+        textSize(12);
+        text("Presione Borrar para volver a introducir datos", 1000, 206);
+      }
     } else {
       editv = true;
     }
     // copy and paste de lo anterior con arreglo en el funcionamiento
     if (!valtemp.equals("") && !valvol.equals("") && editv == true && editt == true) {
-      valorP = (n * valorR * valorT) / valorV;
+      valorP = (n * 8.314 * valorT) / valorV;
       valpres = String.valueOf(valorP);
       editp = false;
       textSize(10);
@@ -180,12 +204,20 @@ void draw () {
       textSize(16);
       fill(0);
       text("Borrar", 1190, 172);
+      image(exc, 1165, 158, 20, 20);
+      if (mouseX>1165 && mouseX<1185 && mouseY>158 && mouseY<178) {
+        fill(255);
+        quad(990, 190, 990, 209, 1270, 209, 1270, 190);
+        fill(0);
+        textSize(12);
+        text("Presione Borrar para volver a introducir datos", 1000, 206);
+      }
     } else {
       editp = true;
     }
     // copy and paste de lo anterior con arreglo en el funcionamiento
     if (!valpres.equals("") && !valvol.equals("") && editv == true && editp == true) {
-      valorT = (valorP * valorV) / (n * valorR);
+      valorT = (valorP * valorV) / (n * 8.314);
       valtemp = String.valueOf(valorT);
       editt = false;
       textSize(10);
@@ -196,6 +228,14 @@ void draw () {
       textSize(16);
       fill(0);
       text("Borrar", 1190, 172);
+      image(exc, 1165, 158, 20, 20);
+      if (mouseX>1165 && mouseX<1185 && mouseY>158 && mouseY<178) {
+        fill(255);
+        quad(990, 190, 990, 209, 1270, 209, 1270, 190);
+        fill(0);
+        textSize(12);
+        text("Presione Borrar para volver a introducir datos", 1000, 206);
+      }
     } else {
       editt = true;
     }
@@ -506,7 +546,7 @@ void draw () {
 
       fill(255, 255, 0);
       //flecha amarilla que indica el calor cedido
-      if (isobarica1 == false) {
+      if (adiabatica1 == false) {
         if (Q > 0) {
           quad(495, 623, 495, 671, 525, 671, 525, 623);
           triangle(481, 621, 510, 590, 539, 621);
@@ -524,32 +564,42 @@ void draw () {
     text(valtemp, 845, 64);
     text(valpres, 1063, 64);
     text(valvol, 845, 133);
-    text(valrad, 1063, 133);
+    text(8.314, 1063, 133);
     text("Trabajo", 50, 350);
     text(W, 50, 370);
     text("Calor", 50, 400);
     text(Q1, 50, 420);
-    
   }
   if (mole==true) {
     fill(0);
     molecula();
   }
-  text("Pos X: "+mouseX, 30, 500);
-  text("Pos Y: "+mouseY, 30, 600);
+
+  if (alerta == true) {
+    fill(254, 70, 24);
+    if (adiabatica1 == true) {
+      text("Los valores no pueden estar vacios", 915, 575);
+    } else {
+      text("Los valores no pueden estar vacios", 915, 555);
+    }
+  }
+  
+  if (graf == true) {
+    grafica();
+  }
 }
 
 // funcion para las particulas
 void molecula() {
   for (int i = 0; i < n; i++) {
-    ellipse(mol[i][0], mol[i][1], r, r);
+    ellipse(mol[i][0], mol[i][1], 20, 20);
 
-    mol[i][0]=mol[i][0]+vx*mol[i][2];
+    mol[i][0]=mol[i][0]+7*mol[i][2];
     if ((mol[i][0]>750)||(mol[i][0]<490)) {
       mol[i][2]=mol[i][2] * -1;
     }
 
-    mol[i][1]=mol[i][1]+vy*mol[i][3];
+    mol[i][1]=mol[i][1]+2*mol[i][3];
     if ((mol[i][1]>560)) {
       mol[i][3]=-1;
     } else if ((mol[i][1]<limite)) {
@@ -561,73 +611,115 @@ void molecula() {
 // funcion para calcular los valores finales
 void calcular() {
   if (isobarica1 == true) {
-    if (volfinal.equals("")) {
-      vfinal = valorV * tfinal / valorT;
-      volfinal = String.valueOf(vfinal);
+    if (volfinal.equals("") && tempfinal.equals("")) {
+      alerta = true;
     } else {
-      tfinal = vfinal * valorT / valorV;
-      tempfinal = String.valueOf(tfinal);
+      alerta = false;
+      if (volfinal.equals("")) {
+        vfinal = valorV * tfinal / valorT;
+        volfinal = String.valueOf(vfinal);
+      } else {
+        tfinal = vfinal * valorT / valorV;
+        tempfinal = String.valueOf(tfinal);
+      }
+      trabajo = valorP * (vfinal - valorV);
+      W = String.valueOf(trabajo);
+      Q = n * ((5/2) * 8.314) * (tfinal - valorT);
+      Q1 = String.valueOf(Q);
+      cal = true;
+      graf = true;
     }
-    trabajo = valorP * (vfinal - valorV);
-    W = String.valueOf(trabajo);
-    Q = n * ((5/2) * valorR) * (tfinal - valorT);
-    Q1 = String.valueOf(Q);
   }
 
   if (isovolumetrica1 == true) {
-    if (presfinal.equals("")) {
-      pfinal = valorP * tfinal / valorT;
-      presfinal = String.valueOf(pfinal);
+    if (presfinal.equals("") && tempfinal.equals("")) {
+      alerta = true;
     } else {
-      tfinal = pfinal * valorT / valorP;
-      tempfinal = String.valueOf(tfinal);
+      alerta = false;
+      if (presfinal.equals("")) {
+        pfinal = valorP * tfinal / valorT;
+        presfinal = String.valueOf(pfinal);
+      } else {
+        tfinal = pfinal * valorT / valorP;
+        tempfinal = String.valueOf(tfinal);
+      }
+      trabajo = 0;
+      W = String.valueOf(trabajo);
+      Q = n * ((3/2) * 8.314) * (tfinal - valorT);
+      Q1 = String.valueOf(Q);
+      cal = true;
+      graf = true;
     }
-    trabajo = 0;
-    W = String.valueOf(trabajo);
-    Q = n * ((3/2) * valorR) * (tfinal - valorT);
-    Q1 = String.valueOf(Q);
   }
 
   if (isotermica1 == true) {
-    if (presfinal.equals("")) {
-      pfinal = valorP * valorV / vfinal;
-      presfinal = String.valueOf(pfinal);
+    if (presfinal.equals("") && volfinal.equals("")) {
+      alerta = true;
     } else {
-      vfinal = valorP * valorV / pfinal;
-      volfinal = String.valueOf(vfinal);
+      alerta = false;
+      if (presfinal.equals("")) {
+        pfinal = valorP * valorV / vfinal;
+        presfinal = String.valueOf(pfinal);
+      } else {
+        vfinal = valorP * valorV / pfinal;
+        volfinal = String.valueOf(vfinal);
+      }
+      trabajo = n * 8.314 * valorT * Math.log(vfinal/valorV);
+      W = String.valueOf(trabajo);
+      Q = trabajo;
+      Q1 = String.valueOf(Q);
+      cal = true;
+      graf = true;
     }
-    trabajo = n * valorR * valorT * Math.log(vfinal/valorV);
-    W = String.valueOf(trabajo);
-    Q = trabajo;
-    Q1 = String.valueOf(Q);
   }
 
   if (adiabatica1 == true) {
-    if (!tempfinal.equals("")) {
-      vfinal = Math.pow(((valorT*Math.pow(valorV, cons-1) / tfinal)), (1/cons-1));
-      pfinal = ((valorP*Math.pow(valorV, cons) / Math.pow(vfinal, cons)));
-      volfinal = String.valueOf(vfinal);
-      presfinal = String.valueOf(pfinal);
+    if (presfinal.equals("") && tempfinal.equals("") && volfinal.equals("")) {
+      alerta = true;
+      cal = false;
+    } else {
+      alerta = false;
+      if (!tempfinal.equals("")) {
+        vfinal = Math.pow(((valorT*Math.pow(valorV, cons-1) / tfinal)), (1/cons-1));
+        pfinal = ((valorP*Math.pow(valorV, cons) / Math.pow(vfinal, cons)));
+        volfinal = String.valueOf(vfinal);
+        presfinal = String.valueOf(pfinal);
+      }
+      if (!presfinal.equals("")) {
+        vfinal = Math.pow((valorP*Math.pow(valorV, cons) / pfinal), (1/ cons));
+        tfinal = ((valorT*Math.pow(valorV, cons-1) / Math.pow(vfinal, cons-1)));
+        volfinal = String.valueOf(vfinal);
+        tempfinal = String.valueOf(tfinal);
+      }
+      if (!volfinal.equals("")) {
+        pfinal = ((valorP*Math.pow(valorV, cons) / Math.pow(vfinal, cons)));
+        tfinal = ((valorT*Math.pow(valorV, cons-1) / Math.pow(vfinal, cons-1)));
+        presfinal = String.valueOf(pfinal);
+        tempfinal = String.valueOf(tfinal);
+      }
+      trabajo = ((1 / (cons-1)) * (valorP * valorV - pfinal * vfinal));
+      W = String.valueOf(trabajo);
+      Q = 0;
+      Q1 = String.valueOf(Q);
+      cal = true;
+      graf = true;
     }
-    if (!presfinal.equals("")) {
-      vfinal = Math.pow((valorP*Math.pow(valorV, cons) / pfinal), (1/ cons));
-      tfinal = ((valorT*Math.pow(valorV, cons-1) / Math.pow(vfinal, cons-1)));
-      volfinal = String.valueOf(vfinal);
-      tempfinal = String.valueOf(tfinal);
-    }
-    if (!volfinal.equals("")) {
-      pfinal = ((valorP*Math.pow(valorV, cons) / Math.pow(vfinal, cons)));
-      tfinal = ((valorT*Math.pow(valorV, cons-1) / Math.pow(vfinal, cons-1)));
-      presfinal = String.valueOf(pfinal);
-      tempfinal = String.valueOf(tfinal);
-    }
-    trabajo = ((1 / (cons-1)) * (valorP * valorV - pfinal * vfinal));
-    W = String.valueOf(trabajo);
-    Q = 0;
-    Q1 = String.valueOf(Q);
   }
-  cal = true;
 }
+
+void grafica() {
+  plot.beginDraw();
+  plot.drawBackground();
+  plot.drawBox();
+  plot.drawXAxis();
+  plot.drawYAxis();
+  plot.drawTopAxis();
+  plot.drawRightAxis();
+  plot.drawTitle();
+  plot.drawPoints();
+  plot.endDraw();
+}
+
 
 //mapeo de letras para que puedan ser leidos los valores 
 void keyPressed() {
@@ -740,6 +832,7 @@ void mouseClicked() {
   if (creditos == true) {
     if (mouseX>10 && mouseX<81 && mouseY>0 && mouseY<81) {
       creditos=false; // Boton retroceso en creditos
+      y = -550;
     }
   }
 
@@ -912,7 +1005,7 @@ void mouseClicked() {
         vf = false;
       }
       if (mouseX>976 && mouseX<1110 && mouseY>586 && mouseY<642) {
-        if (adiabatica1 == true) {
+        if (pos3 == -270) {
           calcular();
         }
       }
@@ -933,4 +1026,6 @@ void borrar() {
   Q = 0;
   W = "";
   Q1 = "";
+  graf = false;
+  alerta = false;
 }
