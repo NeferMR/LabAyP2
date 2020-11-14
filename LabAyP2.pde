@@ -767,6 +767,9 @@ void keyPressed() {
         valtemp = valtemp.substring(0, valtemp.length() - 1);
       }
     }
+    if (key == 45) {
+      valtemp = cambio(valtemp); 
+    }
   }
   // copy and paste de lo anterior con arreglo en el funcionamiento
   if (pres == true && editp == true) {
@@ -783,6 +786,9 @@ void keyPressed() {
         valpres = valpres.substring(0, valpres.length() - 1);
       }
     }
+    if (key == 45) {
+      valpres = cambio(valpres); 
+    }
   }
   if (volu == true && editv == true) {
     if (key>='0' && key<='9') {
@@ -797,6 +803,9 @@ void keyPressed() {
       if (key == 8) {
         valvol = valvol.substring(0, valvol.length() - 1);
       }
+    }
+    if (key == 45) {
+      valvol = cambio(valvol); 
     }
   }
   if (tf == true && vf == false && pf == false) {
@@ -813,6 +822,9 @@ void keyPressed() {
         tempfinal = tempfinal.substring(0, tempfinal.length() - 1);
       }
     }
+    if (key == 45) {
+      tempfinal = cambio(tempfinal); 
+    }
   }
   if (tf == false && vf == true && pf == false) {
     if (key>='0' && key<='9') {
@@ -828,6 +840,9 @@ void keyPressed() {
         volfinal = volfinal.substring(0, volfinal.length() - 1);
       }
     }
+    if (key == 45) {
+      volfinal = cambio(volfinal); 
+    }
   }
   if (tf == false && vf == false && pf == true) {
     if (key>='0' && key<='9') {
@@ -842,6 +857,9 @@ void keyPressed() {
       if (key == 8) {
         presfinal = presfinal.substring(0, presfinal.length() - 1);
       }
+    }
+    if (key == 45) {
+      presfinal = cambio(presfinal); 
     }
   }
 }
@@ -1058,5 +1076,12 @@ void borrar() {
   Q1 = "";
   graf = false;
   alerta = false;
+}
 
+String cambio (String valor) {
+  float aux;
+  aux = Float.parseFloat(valor);
+  aux = aux * -1;
+  valor = String.valueOf(aux);
+  return valor;
 }
