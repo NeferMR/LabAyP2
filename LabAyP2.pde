@@ -5,9 +5,9 @@ int x=1280, x1=1280, x2=1280, cambio=3, cambio1=2, cambio2=1, y=-550, cambioy=1,
 PImage title, play, exit, credit, wallpaper, nube1, nube2, nube3, salida, wallpaper2, ex, recipiente, piston, credtxt, isobarica, isovolumetrica, isotermica, adiabatica, isobaricasup, isovolumetricasup, isotermicasup, adiabaticasup, fuegobase, exc;
 int maxFuego = 8, imageIndex=0, nPoints = 1000;
 PImage [] fuego = new PImage[maxFuego];
-double tfinal, pfinal, vfinal, valorT, valorP, valorV, cons = (5*8.314)/3, trabajo, Q;
+double tfinal, pfinal, vfinal, valorT, valorP, valorV, cons = (5*8.314)/3, trabajo, Q, energia;
 boolean graf = false, cal = false, tf = false, vf = false, pf = false, temp2, vol2, pres2, look = false, creditos=false, jugar=false, temp=false, pres=false, volu=false, mole=false, isobarica1=false, isotermica1=false, isovolumetrica1=false, adiabatica1=false, editv, editp, editt, wait = false, alerta = false, puntos = false;
-String tempfinal = "", volfinal = "", presfinal = "", valtemp = "", valpres = "", valvol = "", W = "", Q1 = "";
+String tempfinal = "", volfinal = "", presfinal = "", valtemp = "", valpres = "", valvol = "", W = "", Q1 = "", energy = "";
 int tapa = 0, limite = 415;
 float mol[][] = new float [100][4];
 GPointsArray points = new GPointsArray(nPoints);
@@ -565,6 +565,8 @@ void draw () {
     text(W, 50, 370);
     text("Calor", 50, 400);
     text(Q1, 50, 420);
+    text("Variación de energia", 50, 450);
+    text(energy, 50, 470);
   }
   if (mole==true) {
     fill(0);
@@ -622,6 +624,8 @@ void calcular() {
       W = String.valueOf(trabajo);
       Q = n * ((5/2) * 8.314) * (tfinal - valorT);
       Q1 = String.valueOf(Q);
+      energia = Q + trabajo ;
+      energy = String.valueOf(energia);
       cal = true;
       graf = true;
       puntos = true;
@@ -644,6 +648,8 @@ void calcular() {
       W = String.valueOf(trabajo);
       Q = n * ((3/2) * 8.314) * (tfinal - valorT);
       Q1 = String.valueOf(Q);
+      energia = Q + trabajo ;
+      energy = String.valueOf(energia);
       cal = true;
       graf = true;
       puntos = true;
@@ -665,6 +671,8 @@ void calcular() {
       W = String.valueOf(trabajo);
       Q = trabajo;
       Q1 = String.valueOf(Q);
+      energia = Q + trabajo ;
+      energy = String.valueOf(energia);
       cal = true;
       graf = true;
       puntos = true;
@@ -699,6 +707,8 @@ void calcular() {
       W = String.valueOf(trabajo);
       Q = 0;
       Q1 = String.valueOf(Q);
+      energia = Q + trabajo ;
+      energy = String.valueOf(energia);
       cal = true;
       graf = true;
       puntos = true;
