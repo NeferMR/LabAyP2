@@ -5,9 +5,10 @@ int x=1280, x1=1280, x2=1280, cambio=3, cambio1=2, cambio2=1, y=-550, cambioy=1,
 PImage title, play, exit, credit, wallpaper, nube1, nube2, nube3, salida, wallpaper2, ex, recipiente, piston, credtxt, isobarica, isovolumetrica, isotermica, adiabatica, isobaricasup, isovolumetricasup, isotermicasup, adiabaticasup, fuegobase, exc;
 int maxFuego = 8, imageIndex=0, nPoints = 1000;
 PImage [] fuego = new PImage[maxFuego];
-double tfinal, pfinal, vfinal, valorT, valorP, valorV, cons = (5*8.314)/3, trabajo, Q, energia;
-boolean graf = false, cal = false, tf = false, vf = false, pf = false, temp2, vol2, pres2, look = false, creditos=false, jugar=false, temp=false, pres=false, volu=false, mole=false, isobarica1=false, isotermica1=false, isovolumetrica1=false, adiabatica1=false, editv, editp, editt, wait = false, alerta = false, puntos = false;
+float tfinal, pfinal, vfinal, valorT, valorP, valorV, cons = (5*8.314)/3;
+boolean graf = false, cal = false, tf = false, vf = false, pf = false, temp2, vol2, pres2, look = false, creditos=false, jugar=false, temp=false, pres=false, volu=false, mole=false, isobarica1=false, isotermica1=false, isovolumetrica1=false, adiabatica1=false, editv, editp, editt, wait = false, alerta = false, puntos = false, grafi = false, dontback = false;
 String tempfinal = "", volfinal = "", presfinal = "", valtemp = "", valpres = "", valvol = "", W = "", Q1 = "", energy = "";
+double trabajo, Q, energia;
 int tapa = 0, limite = 415;
 float mol[][] = new float [100][4];
 GPointsArray points = new GPointsArray(nPoints);
@@ -46,8 +47,9 @@ void setup () {
   }
 
   plot = new GPlot(this, 12, 77, 390, 241);
+  plot.setPoints(points);
   plot.setTitleText("Grafica P vs V");
-  plot.getXAxis().setAxisLabelText("vulumen");
+  plot.getXAxis().setAxisLabelText("volumen");
   plot.getYAxis().setAxisLabelText("presion");
 }
 
@@ -93,7 +95,7 @@ void draw () {
     image(exit, 255, 90, 720, 720); // Exit Buttom
     image(credit, 255, 190); // Credits Buttom
     fill(225);
-    text("Version 4.2", 1190, 700);
+    text("Version 4.7", 1190, 700);
   }
 
   if (creditos == true) { // animacion para los creditos
@@ -667,7 +669,7 @@ void calcular() {
         vfinal = valorP * valorV / pfinal;
         volfinal = String.valueOf(vfinal);
       }
-      trabajo = n * 8.314 * valorT * Math.log(vfinal/valorV);
+      trabajo = n * 8.314 * valorT * Math.log (vfinal/valorV);
       W = String.valueOf(trabajo);
       Q = trabajo;
       Q1 = String.valueOf(Q);
@@ -686,20 +688,18 @@ void calcular() {
     } else {
       alerta = false;
       if (!tempfinal.equals("")) {
-        vfinal = Math.pow(((valorT*Math.pow(valorV, cons-1) / tfinal)), (1/cons-1));
-        pfinal = ((valorP*Math.pow(valorV, cons) / Math.pow(vfinal, cons)));
+        vfinal = (float) Math.pow(((valorT*Math.pow(valorV, (cons-1)) / tfinal)), (1/(cons-1)));
+        pfinal = (float) ((valorP*Math.pow(valorV, cons) / Math.pow(vfinal, cons)));
         volfinal = String.valueOf(vfinal);
         presfinal = String.valueOf(pfinal);
-      }
-      if (!presfinal.equals("")) {
-        vfinal = Math.pow((valorP*Math.pow(valorV, cons) / pfinal), (1/ cons));
-        tfinal = ((valorT*Math.pow(valorV, cons-1) / Math.pow(vfinal, cons-1)));
+      } else if (!presfinal.equals("")) {
+        vfinal = (float) Math.pow((valorP*Math.pow(valorV, cons) / pfinal), (1/ cons));
+        tfinal = (float) ((valorT*Math.pow(valorV, cons-1) / Math.pow(vfinal, cons-1)));
         volfinal = String.valueOf(vfinal);
         tempfinal = String.valueOf(tfinal);
-      }
-      if (!volfinal.equals("")) {
-        pfinal = ((valorP*Math.pow(valorV, cons) / Math.pow(vfinal, cons)));
-        tfinal = ((valorT*Math.pow(valorV, cons-1) / Math.pow(vfinal, cons-1)));
+      } else if (!volfinal.equals("")) {
+        pfinal = (float) ((valorP*Math.pow(valorV, cons) / Math.pow(vfinal, cons)));
+        tfinal = (float) ((valorT*Math.pow(valorV, cons-1) / Math.pow(vfinal, cons-1)));
         presfinal = String.valueOf(pfinal);
         tempfinal = String.valueOf(tfinal);
       }
@@ -737,27 +737,49 @@ void puntos(float xp1, float yp1, float xp2, float yp2) {
   double  sety = 0;
   xt = xp2 - xp1;
   yt = yp2 - yp1;
-  for (float i = 0.001; i <= 1; i = i + 0.001) {
-    if (isovolumetrica1 == true) {
-      setx = xp1;
-      sety = yp1 + yt*i;
-    } else {
-      setx = xp1 + xt*i;
+  if (dontback == false) {
+    for (float i = 0.001; i <= 1; i = i + 0.001) {
+      if (isovolumetrica1 == true) {
+        setx = xp1;
+        sety = yp1 + yt*i;
+      } else {
+        setx = xp1 + xt*i;
+      }
+      if (isobarica1 == true) {
+        sety = yp1;
+      }
+      if (isotermica1 == true) {
+        sety = xp1 * yp1 / setx;
+      }
+      if (adiabatica1 == true) {
+        sety = ((yp1*Math.pow(xp1, cons) / Math.pow(setx, cons)));
+      }
+      points.add(setx, (float) sety);
     }
-    if (isobarica1 == true) {
-      sety = yp1;
+    plot.setPoints(points);
+    plot.setPointColor(color(100, 100, 255, 100));
+    dontback = true;
+  } else {
+    for (float i = 0.001; i <= 1; i = i + 0.001) {
+      if (isovolumetrica1 == true) {
+        setx = xp1;
+        sety = yp1 + yt*i;
+      } else {
+        setx = xp1 + xt*i;
+      }
+      if (isobarica1 == true) {
+        sety = yp1;
+      }
+      if (isotermica1 == true) {
+        sety = xp1 * yp1 / setx;
+      }
+      if (adiabatica1 == true) {
+        sety = ((valorP*Math.pow(valorV, cons) / Math.pow(setx, cons)));
+      }
+      plot.addPoint(setx, (float) sety);
     }
-    if (isotermica1 == true) {
-      sety = xp1 * yp1 / setx;
-    }
-    if (isobarica1 == true) {
-      sety = ((yp1*Math.pow(xp1,cons) / Math.pow(setx,cons)));
-    }
-    points.add(setx,(float) sety);
   }
-
-  plot.setPoints(points);
-  plot.setPointColor(color(100, 100, 255, 100));
+  grafi = true;
   puntos = false;
 }
 
@@ -778,7 +800,7 @@ void keyPressed() {
       }
     }
     if (key == 45) {
-      valtemp = cambio(valtemp); 
+      valtemp = cambio(valtemp);
     }
   }
   // copy and paste de lo anterior con arreglo en el funcionamiento
@@ -797,7 +819,7 @@ void keyPressed() {
       }
     }
     if (key == 45) {
-      valpres = cambio(valpres); 
+      valpres = cambio(valpres);
     }
   }
   if (volu == true && editv == true) {
@@ -815,7 +837,7 @@ void keyPressed() {
       }
     }
     if (key == 45) {
-      valvol = cambio(valvol); 
+      valvol = cambio(valvol);
     }
   }
   if (tf == true && vf == false && pf == false) {
@@ -833,7 +855,7 @@ void keyPressed() {
       }
     }
     if (key == 45) {
-      tempfinal = cambio(tempfinal); 
+      tempfinal = cambio(tempfinal);
     }
   }
   if (tf == false && vf == true && pf == false) {
@@ -851,7 +873,7 @@ void keyPressed() {
       }
     }
     if (key == 45) {
-      volfinal = cambio(volfinal); 
+      volfinal = cambio(volfinal);
     }
   }
   if (tf == false && vf == false && pf == true) {
@@ -869,7 +891,7 @@ void keyPressed() {
       }
     }
     if (key == 45) {
-      presfinal = cambio(presfinal); 
+      presfinal = cambio(presfinal);
     }
   }
 }
@@ -967,7 +989,6 @@ void mouseClicked() {
     if (mouseX>890 && mouseX<1200 && mouseY>473 && mouseY<528 && isotermica1 == false && isobarica1 == false && isovolumetrica1 == false && adiabatica1 == false) {
       isobarica1=false;
       isotermica1=true;
-      borrar();
       isovolumetrica1=false;
       adiabatica1=false;
       look = true;
@@ -1074,6 +1095,9 @@ void mouseClicked() {
   }
 }
 void borrar() {
+  pfinal = 0;
+  vfinal = 0;
+  tfinal = 0;
   presfinal = "";
   volfinal = "";
   tempfinal = "";
@@ -1082,10 +1106,18 @@ void borrar() {
   cal = false;
   trabajo = 0;
   Q = 0;
+  energia = 0;
   W = "";
   Q1 = "";
+  energy = "";
   graf = false;
   alerta = false;
+  if (grafi == true) {
+    for (float i = 0.001; i <= 1; i = i + 0.001) {
+      plot.removePoint(0);
+    }
+    grafi = false;
+  }
 }
 
 String cambio (String valor) {
