@@ -42,7 +42,7 @@ void setup () {
   arriba = loadImage("flecha_arriba.png");
   abajo = loadImage("flecha_abajo.png");
   botborrar = loadImage("remove.png");
-  for (int i = 0; i < fuego.length; i++) {
+  for (int i = 0; i < fuego.length; i++) { // Cargar imagen mediante ciclos
     fuego[i] = loadImage("fuego_" + i + ".png");
   }
   if (mole==true) {
@@ -166,27 +166,27 @@ void draw () {
 
 
 
-    // Calcular el cuarto valor
+    // Calcular el cuarto valor Inicial
     if (!valtemp.equals("") && !valpres.equals("") && editp == true && editt == true) {
-      valorV = (n * 8.314 * valorT) / valorP;
-      valvol = String.valueOf(valorV);
-      editv = false;
+      valorV = (n * 8.314 * valorT) / valorP; // Proceso fisico
+      valvol = String.valueOf(valorV); // convertir valor a string para mostrarlo
+      editv = false; // desactiva la edicion de este dato ya que es calculado por el programa
       textSize(10);
       fill(255, 0, 0);
-      text("Se ha autocompletado el valor del volumen", 834, 158);
-      image(botborrar, 1187, 150, 50, 50);
-      image(exc, 1165, 162, 20, 20);
+      text("Se ha autocompletado el valor del volumen", 834, 158); // informarle al usuario que el programa ha hecho el proceso
+      image(botborrar, 1187, 150, 50, 50); // Boton para borrar los valores iniciales
+      image(exc, 1165, 162, 20, 20); // Signo que orienta al usuario la utilidad del boton borrar
       if (mouseX>1165 && mouseX<1185 && mouseY>158 && mouseY<178) {
         fill(255);
         quad(990, 190, 990, 209, 1270, 209, 1270, 190);
         fill(0);
         textSize(12);
-        text("Presione Borrar para volver a introducir datos", 1000, 206);
+        text("Presione Borrar para volver a introducir datos", 1000, 206); // Mostrar la orientacion
       }
     } else {
-      editv = true;
+      editv = true; // Habilitar la edicion de este valor
     }
-    // copy and paste de lo anterior con arreglo en el funcionamiento
+    // copy and paste de lo anterior con adaptaciones en el funcionamiento
     if (!valtemp.equals("") && !valvol.equals("") && editv == true && editt == true) {
       valorP = (n * 8.314 * valorT) / valorV;
       valpres = String.valueOf(valorP);
@@ -206,7 +206,7 @@ void draw () {
     } else {
       editp = true;
     }
-    // copy and paste de lo anterior con arreglo en el funcionamiento
+    // copy and paste de lo anterior con adaptaciones en el funcionamiento
     if (!valpres.equals("") && !valvol.equals("") && editv == true && editp == true) {
       valorT = (valorP * valorV) / (n * 8.314);
       valtemp = String.valueOf(valorT);
@@ -252,7 +252,7 @@ void draw () {
         }
         quad(910, 482, 910, 520, 1184, 520, 1184, 482);
         fill(141, 165, 233);
-        quad(976, 566, 976, 622, 1110, 622, 1110, 566);
+        quad(976, 566, 976, 622, 1110, 622, 1110, 566); // Figura utilizada para calcular
         fill(0);
         textSize(12);
         text("Temperatura final", 910, 383); // Horientar al usuario donde debe ingresar los valores
@@ -279,24 +279,24 @@ void draw () {
         }
       }
     }
-    // copy and paste de lo anterior con arreglo en el funcionamiento
+    // copy and paste de lo anterior con adaptaciones en el funcionamiento
     if (isovolumetrica1==true) {
       fill(0);
       triangle(886, 231, 864, 246, 886, 261);
       image(isovolumetricasup, 0, pos1);
       if (pos1 > -86 && look == true) { // animacion para cuando el boton sea seleccionado este suba
-        pos1 = pos1 - 3;
-      } else if (look == false) {
-        if (wait == true) {
+        pos1 = pos1 - 3; // Desplazar el boton hasta el limite indicado
+      } else if (look == false) { // Preparar la animacion de bajada
+        if (wait == true) { //Iniciar la animacion hasta que vuelva a su lugar original
           if (pos1 < 0) { // animacion de bajada
             pos1 = pos1 + 3;
           } else {
-            wait = false;
+            wait = false; //una vez en su lugar original terminar la animacion
           }
         } else {
           isovolumetrica1 = false; // desactivacion del boton para cuando el boton llegue a su posicion original
         }
-        // copy and paste de lo anterior con arreglo en el funcionamiento
+        // copy and paste de lo anterior (En isobarica) con adaptaciones en el funcionamiento
       } else {
         if (!tempfinal.equals("")) {
           tfinal = Float.parseFloat(tempfinal);
@@ -345,7 +345,7 @@ void draw () {
         }
       }
     }
-    // copy and paste de lo anterior con arreglo en el funcionamiento
+    // copy and paste de lo anterior con adaptaciones en el funcionamiento
     if (isotermica1==true) {
       fill(0);
       triangle(886, 231, 864, 246, 886, 261);
@@ -410,7 +410,7 @@ void draw () {
         }
       }
     }
-    // copy and paste de lo anterior con arreglo en el funcionamiento
+    // copy and paste de lo anterior con adaptaciones en el funcionamiento
     if (adiabatica1==true) {
       fill(0);
       triangle(886, 231, 864, 246, 886, 261);
@@ -501,12 +501,12 @@ void draw () {
     }
 
 
-    if (cal == true) {
+    if (cal == true) { // Condicional para identificar cuando se calcula
       //animacion para el piston movil
-      if (isovolumetrica1 == false) {
-        if (valorV > vfinal) {
+      if (isovolumetrica1 == false) { // condicional para evitar proceso sin movimiento
+        if (valorV > vfinal) { // Identificar donde se mueve
           if (limite < 515) {
-            limite++;
+            limite++; // Hacer la animacion
             tapa++;
           }
         } else if (valorV < vfinal) {
@@ -520,8 +520,8 @@ void draw () {
       fill(255, 255, 0);
       //flecha amarilla que indica el calor cedido
       if (adiabatica1 == false) {
-        if (Q > 0) {
-          image(arriba, 385, 563, 80, 80);
+        if (Q > 0) { // Identificar direccion de la flecha
+          image(arriba, 385, 563, 80, 80); // mostrar flecha amarilla
         } else if (Q < 0) {
           image(abajo, 385, 563, 80, 80);
         }
@@ -543,11 +543,11 @@ void draw () {
     text("Variación de energia", 50, 450);
     text(energy, 50, 470);
   }
-  if (mole==true) {
+  if (mole==true) { // Si se activa la molecula iniciar subrutina
     fill(0);
     molecula();
   }
-
+// Mostrar cuando hay errores de ingreso de datos
   if (alerta == true) {
     fill(254, 70, 24);
     if (adiabatica1 == true) {
@@ -560,7 +560,7 @@ void draw () {
     text("Los valores no pueden estar vacios o ser cero", 870, 171);
   }
 
-  if (graf == true) {
+  if (graf == true) { //Identificar si debe mostrarse la grafica
     grafica();
   }
 }
@@ -568,14 +568,14 @@ void draw () {
 // funcion para las particulas
 void molecula() {
   for (int i = 0; i < n; i++) {
-    ellipse(mol[i][0], mol[i][1], 20, 20);
-
-    mol[i][0]=mol[i][0]+7*mol[i][2];
+    ellipse(mol[i][0], mol[i][1], 20, 20); //Dibujar las moleculas
+//Modificar las caracteristicas de las moleculas mediante matrices
+    mol[i][0]=mol[i][0]+7*mol[i][2]; //Modificar velocidad siendo esta una caracteristica
     if ((mol[i][0]>750)||(mol[i][0]<490)) {
       mol[i][2]=mol[i][2] * -1;
     }
 
-    mol[i][1]=mol[i][1]+2*mol[i][3];
+    mol[i][1]=mol[i][1]+2*mol[i][3]; //Modificar velocidad siendo esta una caracteristica
     if ((mol[i][1]>560)) {
       mol[i][3]=-1;
     } else if ((mol[i][1]<limite)) {
@@ -587,34 +587,35 @@ void molecula() {
 // funcion para calcular los valores finales
 void calcular() {
   if (isobarica1 == true) {
-    if ((volfinal.equals("") && tempfinal.equals("")) || volfinal.equals("0") || tempfinal.equals("0")) {
-      alerta = true;
+    if ((volfinal.equals("") && tempfinal.equals("")) || volfinal.equals("0") || tempfinal.equals("0")) { // Identificar que no halla mal ingreso de datos
+      alerta = true; //Activar la alerta y no dejar realizar procedimiento
       cal = false;
-    } else if ((valpres.equals("") && valtemp.equals("") && valvol.equals("")) || valpres.equals("0") || valtemp.equals("0") || valvol.equals("0") || n == 0) {
-      alerta2 = true;
+    } else if ((valpres.equals("") && valtemp.equals("") && valvol.equals("")) || valpres.equals("0") || valtemp.equals("0") || valvol.equals("0") || n == 0) { // Identificar que no halla mal ingreso de datos
+      alerta2 = true; //Activar la alerta y no dejar realizar procedimiento
       cal = false;
-    } else {
+    } else { // Sin alertas procede a hacer procedimiento
       alerta = false;
       alerta2 = false;
-      if (volfinal.equals("")) {
-        vfinal = valorV * tfinal / valorT;
+      if (volfinal.equals("")) { // identifica el valor a calcular
+        vfinal = valorV * tfinal / valorT; //Proceso fisico
         volfinal = String.valueOf(vfinal);
       } else {
         tfinal = vfinal * valorT / valorV;
         tempfinal = String.valueOf(tfinal);
       }
-      trabajo = valorP * (vfinal - valorV);
+      trabajo = valorP * (vfinal - valorV); // Procesos fisicos
       W = String.valueOf(trabajo);
       Q = n * ((5/2) * 8.314) * (tfinal - valorT);
       Q1 = String.valueOf(Q);
       energia = Q + trabajo ;
       energy = String.valueOf(energia);
+      //Abrir paso al dibujar grafica
       cal = true;
       graf = true;
       puntos = true;
     }
   }
-
+// copy and paste de lo anterior con adaptaciones en el funcionamiento
   if (isovolumetrica1 == true) {
     if ((presfinal.equals("") && tempfinal.equals("")) || presfinal.equals("0") || tempfinal.equals("0")) {
       alerta = true;
@@ -643,6 +644,7 @@ void calcular() {
       puntos = true;
     }
   }
+  // copy and paste de lo anterior con adaptaciones en el funcionamiento
   if (isotermica1 == true) {
     if ((presfinal.equals("") && volfinal.equals("")) || presfinal.equals("0") || volfinal.equals("0")) {
       alerta = true;
@@ -671,7 +673,7 @@ void calcular() {
       puntos = true;
     }
   }
-
+// copy and paste de lo anterior con adaptaciones en el funcionamiento
   if (adiabatica1 == true) {
     if ((presfinal.equals("") && tempfinal.equals("") && volfinal.equals("")) || presfinal.equals("0") || tempfinal.equals("0") || volfinal.equals("0")) {
       alerta = true;
@@ -712,9 +714,10 @@ void calcular() {
 }
 
 void grafica() {
-  if (puntos == true) {
+  if (puntos == true) { // Enviar a subrutina para calcular los puntos de la grafica
     puntos((float) valorV, (float) valorP, (float) vfinal, (float) pfinal);
   }
+  // Dibujar la grafica
   plot.beginDraw();
   plot.drawBackground();
   plot.drawBox();
@@ -727,19 +730,20 @@ void grafica() {
   plot.endDraw();
 }
 
-void puntos(float xp1, float yp1, float xp2, float yp2) {
+void puntos(float xp1, float yp1, float xp2, float yp2) { // Funcion para dibujar los puntos
   float xt = 0, yt = 0, setx = 0;
   double  sety = 0;
   xt = xp2 - xp1;
   yt = yp2 - yp1;
   if (dontback == false) {
     for (float i = 0.002; i <= 1; i = i + 0.002) {
-      if (isovolumetrica1 == true) {
+      if (isovolumetrica1 == true) { // Calcular la cordenada X
         setx = xp1;
         sety = yp1 + yt*i;
       } else {
         setx = xp1 + xt*i;
-      }
+      } 
+      //Calcular las cordenadas en Y segun procesos fisicos
       if (isobarica1 == true) {
         sety = yp1;
       }
@@ -749,13 +753,15 @@ void puntos(float xp1, float yp1, float xp2, float yp2) {
       if (adiabatica1 == true) {
         sety = ((yp1*Math.pow(xp1, cons) / Math.pow(setx, cons)));
       }
-      points.add(setx, (float) sety);
+      points.add(setx, (float) sety); // Añadir puntos
     }
+    // Definir los puntos a agregar
     plot.setPoints(points);
     plot.setPointColor(color(100, 100, 255, 100));
-    dontback = true;
+    dontback = true; //Variable para no permitir el regreso a este procedimiento
   } else {
     for (float i = 0.002; i <= 1; i = i + 0.002) {
+      //Calculo de puntos
       if (isovolumetrica1 == true) {
         setx = xp1;
         sety = yp1 + yt*i;
@@ -771,9 +777,11 @@ void puntos(float xp1, float yp1, float xp2, float yp2) {
       if (adiabatica1 == true) {
         sety = ((valorP*Math.pow(valorV, cons) / Math.pow(setx, cons)));
       }
+      // Agregar puntos con grafica ya definida
       plot.addPoint(setx, (float) sety);
     }
   }
+  // Activar la muetra de grafica
   grafi = true;
   puntos = false;
 }
