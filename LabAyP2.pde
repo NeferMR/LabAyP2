@@ -2,11 +2,11 @@ import grafica.*;
 GPlot plot;
 
 int x=1280, x1=1280, x2=1280, cambio=3, cambio1=2, cambio2=1, y=-550, cambioy=1, n=0, a, pos1 = 0, pos2 = 0, pos3 = 0;
-PImage title, play, exit, credit, wallpaper, nube1, nube2, nube3, salida, wallpaper2, ex, recipiente, piston, credtxt, isobarica, isovolumetrica, isotermica, adiabatica, isobaricasup, isovolumetricasup, isotermicasup, adiabaticasup, fuegobase, exc;
+PImage title, play, exit, credit, wallpaper, nube1, nube2, nube3, salida, wallpaper2, ex, recipiente, piston, credtxt, isobarica, isovolumetrica, isotermica, adiabatica, isobaricasup, isovolumetricasup, isotermicasup, adiabaticasup, fuegobase, exc, arriba, abajo, botborrar;
 int maxFuego = 8, imageIndex=0, nPoints = 1000;
 PImage [] fuego = new PImage[maxFuego];
 float tfinal, pfinal, vfinal, valorT, valorP, valorV, cons = (5*8.314)/3;
-boolean graf = false, cal = false, tf = false, vf = false, pf = false, temp2, vol2, pres2, look = false, creditos=false, jugar=false, temp=false, pres=false, volu=false, mole=false, isobarica1=false, isotermica1=false, isovolumetrica1=false, adiabatica1=false, editv, editp, editt, wait = false, alerta = false, puntos = false, grafi = false, dontback = false;
+boolean graf = false, cal = false, tf = false, vf = false, pf = false, temp2, vol2, pres2, look = false, creditos=false, jugar=false, temp=false, pres=false, volu=false, mole=false, isobarica1=false, isotermica1=false, isovolumetrica1=false, adiabatica1=false, editv, editp, editt, wait = false, alerta = false, puntos = false, grafi = false, dontback = false, alerta2 = false;
 String tempfinal = "", volfinal = "", presfinal = "", valtemp = "", valpres = "", valvol = "", W = "", Q1 = "", energy = "";
 double trabajo, Q, energia;
 int tapa = 0, limite = 415;
@@ -39,6 +39,9 @@ void setup () {
   adiabaticasup= loadImage("t.adiabaticasup.png");
   fuegobase = loadImage("fuegobase.png");
   exc = loadImage("Exclama.png");
+  arriba = loadImage("flecha_arriba.png");
+  abajo = loadImage("flecha_abajo.png");
+  botborrar = loadImage("remove.png");
   for (int i = 0; i < fuego.length; i++) {
     fuego[i] = loadImage("fuego_" + i + ".png");
   }
@@ -171,12 +174,8 @@ void draw () {
       textSize(10);
       fill(255, 0, 0);
       text("Se ha autocompletado el valor del volumen", 834, 158);
-      fill(162, 181, 237);
-      quad(1187, 155, 1187, 179, 1240, 179, 1240, 155);
-      textSize(16);
-      fill(0);
-      text("Borrar", 1190, 172);
-      image(exc, 1165, 158, 20, 20);
+      image(botborrar, 1187, 150, 50, 50);
+      image(exc, 1165, 162, 20, 20);
       if (mouseX>1165 && mouseX<1185 && mouseY>158 && mouseY<178) {
         fill(255);
         quad(990, 190, 990, 209, 1270, 209, 1270, 190);
@@ -195,12 +194,8 @@ void draw () {
       textSize(10);
       fill(255, 0, 0);
       text("Se ha autocompletado el valor de Presion", 1060, 86);
-      fill(162, 181, 237);
-      quad(1187, 155, 1187, 179, 1240, 179, 1240, 155);
-      textSize(16);
-      fill(0);
-      text("Borrar", 1190, 172);
-      image(exc, 1165, 158, 20, 20);
+      image(botborrar, 1187, 150, 50, 50);
+      image(exc, 1165, 162, 20, 20);
       if (mouseX>1165 && mouseX<1185 && mouseY>158 && mouseY<178) {
         fill(255);
         quad(990, 190, 990, 209, 1270, 209, 1270, 190);
@@ -219,12 +214,8 @@ void draw () {
       textSize(10);
       fill(255, 0, 0);
       text("Se ha autocompletado el valor de temperatura", 828, 86);
-      fill(162, 181, 237);
-      quad(1187, 155, 1187, 179, 1240, 179, 1240, 155);
-      textSize(16);
-      fill(0);
-      text("Borrar", 1190, 172);
-      image(exc, 1165, 158, 20, 20);
+      image(botborrar, 1187, 150, 50, 50);
+      image(exc, 1165, 162, 20, 20);
       if (mouseX>1165 && mouseX<1185 && mouseY>158 && mouseY<178) {
         fill(255);
         quad(990, 190, 990, 209, 1270, 209, 1270, 190);
@@ -273,9 +264,7 @@ void draw () {
           textSize(8);
           fill(255, 0, 0);
           text(("Este valor sera calculado por procesos fisicos"), 910, 535); // indicar al usuario que este valor no debe editarlo ya que lo hara el programa
-        }
-        // copy and paste de lo anterior con arreglo en el funcionamiento
-        if (!volfinal.equals("")) {
+        } else if (!volfinal.equals("")) {
           tf = false;
           textSize(8);
           fill(255, 0, 0);
@@ -286,10 +275,7 @@ void draw () {
         text(tempfinal, 915, 416); // Mostrar al usuario los valores digitados o finales
         text(volfinal, 915, 505);
         if (cal == true) {
-          fill(191, 207, 245);
-          quad(876, 600, 876, 631, 960, 631, 960, 600); // crear un boton el cual permita el borrado de datos y volver a iniciar la transformacion
-          fill(0);
-          text("Borrar", 890, 623);
+          image(botborrar, 866, 580, 60, 60); // crear un boton el cual permita el borrado de datos y volver a iniciar la transformacion
         }
       }
     }
@@ -344,8 +330,7 @@ void draw () {
           textSize(8);
           fill(255, 0, 0);
           text(("Este valor sera calculado por procesos fisicos"), 910, 535);
-        }
-        if (!presfinal.equals("")) {
+        } else if (!presfinal.equals("")) {
           tf = false;
           textSize(8);
           fill(255, 0, 0);
@@ -356,10 +341,7 @@ void draw () {
         text(tempfinal, 915, 416);
         text(presfinal, 915, 505);
         if (cal == true) {
-          fill(191, 207, 245);
-          quad(876, 600, 876, 631, 960, 631, 960, 600);
-          fill(0);
-          text("Borrar", 890, 623);
+          image(botborrar, 866, 580, 60, 60);
         }
       }
     }
@@ -413,8 +395,7 @@ void draw () {
           textSize(8);
           fill(255, 0, 0);
           text(("Este valor sera calculado por procesos fisicos"), 910, 535);
-        }
-        if (!volfinal.equals("")) {
+        } else if (!volfinal.equals("")) {
           pf = false;
           textSize(8);
           fill(255, 0, 0);
@@ -425,10 +406,7 @@ void draw () {
         text(presfinal, 915, 416);
         text(volfinal, 915, 505);
         if (cal == true) {
-          fill(191, 207, 245);
-          quad(876, 600, 876, 631, 960, 631, 960, 600);
-          fill(0);
-          text("Borrar", 890, 623);
+          image(botborrar, 866, 580, 60, 60);
         }
       }
     }
@@ -517,10 +495,7 @@ void draw () {
         text(presfinal, 915, 471);
         text(volfinal, 915, 540);
         if (cal == true) {
-          fill(191, 207, 245);
-          quad(876, 600, 876, 631, 960, 631, 960, 600);
-          fill(0);
-          text("Borrar", 890, 623);
+          image(botborrar, 866, 580, 60, 60);
         }
       }
     }
@@ -546,11 +521,9 @@ void draw () {
       //flecha amarilla que indica el calor cedido
       if (adiabatica1 == false) {
         if (Q > 0) {
-          quad(495, 623, 495, 671, 525, 671, 525, 623);
-          triangle(481, 621, 510, 590, 539, 621);
+          image(arriba, 385, 563, 80, 80);
         } else if (Q < 0) {
-          quad(512, 592, 512, 632, 534, 632, 534, 592);
-          triangle(500, 632, 521, 672, 546, 632);
+          image(abajo, 385, 563, 80, 80);
         }
       }
     }
@@ -578,10 +551,13 @@ void draw () {
   if (alerta == true) {
     fill(254, 70, 24);
     if (adiabatica1 == true) {
-      text("Los valores no pueden estar vacios", 915, 575);
+      text("Los valores no pueden estar vacios o ser cero", 870, 575);
     } else {
-      text("Los valores no pueden estar vacios", 915, 555);
+      text("Los valores no pueden estar vacios o ser cero", 870, 555);
     }
+  } else if (alerta2 == true) {
+    fill(255, 0, 0);
+    text("Los valores no pueden estar vacios o ser cero", 870, 171);
   }
 
   if (graf == true) {
@@ -611,10 +587,15 @@ void molecula() {
 // funcion para calcular los valores finales
 void calcular() {
   if (isobarica1 == true) {
-    if (volfinal.equals("") && tempfinal.equals("")) {
+    if ((volfinal.equals("") && tempfinal.equals("")) || volfinal.equals("0") || tempfinal.equals("0")) {
       alerta = true;
+      cal = false;
+    } else if ((valpres.equals("") && valtemp.equals("") && valvol.equals("")) || valpres.equals("0") || valtemp.equals("0") || valvol.equals("0") || n == 0) {
+      alerta2 = true;
+      cal = false;
     } else {
       alerta = false;
+      alerta2 = false;
       if (volfinal.equals("")) {
         vfinal = valorV * tfinal / valorT;
         volfinal = String.valueOf(vfinal);
@@ -635,10 +616,15 @@ void calcular() {
   }
 
   if (isovolumetrica1 == true) {
-    if (presfinal.equals("") && tempfinal.equals("")) {
+    if ((presfinal.equals("") && tempfinal.equals("")) || presfinal.equals("0") || tempfinal.equals("0")) {
       alerta = true;
+      cal = false;
+    } else if ((valpres.equals("") && valtemp.equals("") && valvol.equals("")) || valpres.equals("0") || valtemp.equals("0") || valvol.equals("0") || n == 0) {
+      alerta2 = true;
+      cal = false;
     } else {
       alerta = false;
+      alerta2 = false;
       if (presfinal.equals("")) {
         pfinal = valorP * tfinal / valorT;
         presfinal = String.valueOf(pfinal);
@@ -658,10 +644,15 @@ void calcular() {
     }
   }
   if (isotermica1 == true) {
-    if (presfinal.equals("") && volfinal.equals("")) {
+    if ((presfinal.equals("") && volfinal.equals("")) || presfinal.equals("0") || volfinal.equals("0")) {
       alerta = true;
+      cal = false;
+    } else if ((valpres.equals("") && valtemp.equals("") && valvol.equals("")) || valpres.equals("0") || valtemp.equals("0") || valvol.equals("0") || n == 0) {
+      alerta2 = true;
+      cal = false;
     } else {
       alerta = false;
+      alerta2 = false;
       if (presfinal.equals("")) {
         pfinal = valorP * valorV / vfinal;
         presfinal = String.valueOf(pfinal);
@@ -682,11 +673,15 @@ void calcular() {
   }
 
   if (adiabatica1 == true) {
-    if (presfinal.equals("") && tempfinal.equals("") && volfinal.equals("")) {
+    if ((presfinal.equals("") && tempfinal.equals("") && volfinal.equals("")) || presfinal.equals("0") || tempfinal.equals("0") || volfinal.equals("0")) {
       alerta = true;
+      cal = false;
+    } else if ((valpres.equals("") && valtemp.equals("") && valvol.equals("")) || valpres.equals("0") || valtemp.equals("0") || valvol.equals("0") || n == 0) {
+      alerta2 = true;
       cal = false;
     } else {
       alerta = false;
+      alerta2 = false;
       if (!tempfinal.equals("")) {
         vfinal = (float) Math.pow(((valorT*Math.pow(valorV, (cons-1)) / tfinal)), (1/(cons-1)));
         pfinal = (float) ((valorP*Math.pow(valorV, cons) / Math.pow(vfinal, cons)));
@@ -738,7 +733,7 @@ void puntos(float xp1, float yp1, float xp2, float yp2) {
   xt = xp2 - xp1;
   yt = yp2 - yp1;
   if (dontback == false) {
-    for (float i = 0.001; i <= 1; i = i + 0.001) {
+    for (float i = 0.002; i <= 1; i = i + 0.002) {
       if (isovolumetrica1 == true) {
         setx = xp1;
         sety = yp1 + yt*i;
@@ -760,7 +755,7 @@ void puntos(float xp1, float yp1, float xp2, float yp2) {
     plot.setPointColor(color(100, 100, 255, 100));
     dontback = true;
   } else {
-    for (float i = 0.001; i <= 1; i = i + 0.001) {
+    for (float i = 0.002; i <= 1; i = i + 0.002) {
       if (isovolumetrica1 == true) {
         setx = xp1;
         sety = yp1 + yt*i;
@@ -1113,7 +1108,7 @@ void borrar() {
   graf = false;
   alerta = false;
   if (grafi == true) {
-    for (float i = 0.001; i <= 1; i = i + 0.001) {
+    for (float i = 0.002; i <= 1; i = i + 0.002) {
       plot.removePoint(0);
     }
     grafi = false;
